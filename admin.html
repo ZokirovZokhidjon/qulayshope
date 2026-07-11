@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Qulay Bozor - Director</title>
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-database-compat.js"></script>
+    <style>
+        :root { --green: #2ecc71; --blue: #3498db; --red: #e74c3c; --dark: #1e2126; --light-bg: #f4f7f6; }
+        body { font-family: 'Segoe UI', sans-serif; margin: 0; background: var(--light-bg); }
+        header { background: var(--dark); color: white; padding: 15px; display: flex; justify-content: space-between; align-items: center; border-bottom: 3px solid var(--green); }
+        .stat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; padding: 15px; }
+        .stat-card { background: white; padding: 15px; border-radius: 12px; border-left: 5px solid var(--green); box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
+        .nav-tabs { display: flex; gap: 8px; padding: 10px; overflow-x: auto; }
+        .nav-tabs button { padding: 10px 15px; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; background: #e0e0e0; }
+        .nav-tabs button.active { background: var(--blue); color: white; }
+        .table-container { background: white; padding: 15px; border-radius: 12px; margin: 15px; overflow-x: auto; }
+        table { width: 100%; border-collapse: collapse; }
+        th, td { padding: 12px; border-bottom: 1px solid #eee; text-align: left; }
+    </style>
+</head>
+<body>
+
+<header>
+    <div style="font-weight: bold; font-size: 20px;">QULAY BOZOR | <span style="color: var(--green);">DIRECTOR</span></div>
+    <button onclick="logout()" style="background: var(--red); color: white; border: none; padding: 8px 15px; border-radius: 8px;">ЧИҚИШ</button>
+</header>
+
+<div class="stat-grid">
+    <div class="stat-card"><h3>ЖАМИ САВДО</h3><p id="stat-sales">0 сум</p></div>
+    <div class="stat-card"><h3>МИЖОЗ ҚАРЗИ</h3><p id="stat-client-debts">0 сум</p></div>
+    <div class="stat-card"><h3>ДЎКОН ҚАРЗИ</h3><p id="stat-shop-debts">0 сум</p></div>
+</div>
+
+<div class="nav-tabs">
+    <button id="btn-sales" class="active" onclick="switchTab('sales')">САВДО</button>
+    <button id="btn-debts" onclick="switchTab('debts')">ҚАРЗЛАР</button>
+    <button id="btn-stock" onclick="switchTab('stock')">ОМБОР</button>
+</div>
+
+<div class="table-container">
+    <table><thead id="t-head"></thead><tbody id="t-body"></tbody></table>
+</div>
+
+<script>
+    const firebaseConfig = {
+        apiKey: "AIzaSyAt5qPDDjM8o1sFw9zJ2PCA8Md1Su2zybs",
+        databaseURL: "https://qulaybozor-16d03-default-rtdb.firebaseio.com",
+        projectId: "qulaybozor-16d03",
+        storageBucket: "qulaybozor-16d03.appspot.com",
+        messagingSenderId: "74069372632",
+        appId: "1:74069372632:web:5570f635dd1227434b71ad"
+    };
+
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.database();
+    let currentTab = 'sales';
+
+    function logout() { if(confirm("Чиқмоқчимисиз?")) window.location.href = "login.html"; }
+
+    function switchTab(tab) {
+        currentTab = tab;
+        document.querySelectorAll('.nav-tabs button').forEach(b => b.classList.remove('active'));
+        document.getElementById('btn-' + tab).classList.add('active');
+        loadData();
+    }
+
+    function loadData() {
+        // Статистикани янгилаш
+        db.ref('sales').on('value', s => {
+            let total = 0; if(s.val()) Object.values(s.val()).forEach(v => total += Number(v.total || 0));
+            document.getElementById('stat-sales').innerText = total.toLocaleString() + " сум";
+        });
+
+        db.ref('debts').on('value', d => {
+            let mQarz = 0, dQarz = 0;
+            if(d.val()) Object.values(d.val()).forEach(v => {
+                if(v.type === 'mijoz') mQarz += Number(v.amount || 0);
+                else dQarz += Number(v.amount || 0);
+            });
+            document.getElementById('stat-client-debts').innerText = mQarz.toLocaleString() + " сум";
+            document.getElementById('stat-shop-debts').innerText = dQarz.toLocaleString() + " сум";
+        });
+
+        db.ref(currentTab).on('value', snap => {
+            const data = snap.val() ? Object.entries(snap.val()).map(([id, v]) => ({...v, id})) : [];
+            renderTable(data);
+        });
+    }
+
+    function renderTable(list) {
+        const b = document.getElementById('t-body'), h = document.getElementById('t-head');
+        b.innerHTML = "";
+        
+        if (currentTab === 'sales') {
+            h.innerHTML = "<tr><th>ВАҚТ</th><th>НОМИ</th><th>СУММА</th></tr>";
+            list.reverse().forEach(x => {
+                b.innerHTML += `<tr><td>${x.date || '--'}</td><td>${x.name || ''}</td><td>${Number(x.total || 0).toLocaleString()}</td></tr>`;
+            });
+        } else if (currentTab === 'debts') {
+            h.innerHTML = "<tr><th>ИМС</th><th>ТУРИ</th><th>СУММА</th></tr>";
+            list.forEach(x => {
+                b.innerHTML += `<tr><td>${x.name}</td><td>${x.type === 'mijoz' ? 'Мижоз' : 'Дўкон'}</td><td>${Number(x.amount || 0).toLocaleString()}</td></tr>`;
+            });
+        } else if (currentTab === 'stock') {
+            h.innerHTML = "<tr><th>ВАҚТ</th><th>ТОВАР НОМИ</th><th>МИҚДОР</th><th>НАРХ</th></tr>";
+            list.forEach(x => {
+                b.innerHTML += `<tr><td>${x.date || '--'}</td><td>${x.name || ''}</td><td>${x.qty || ''}</td><td>${Number(x.price || 0).toLocaleString()}</td></tr>`;
+            });
+        }
+    }
+
+    loadData();
+</script>
+</body>
+</html>

@@ -1,0 +1,115 @@
+
+ <!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Qulay Bozor - Welcome</title>
+    <style>
+        body, html { margin: 0; padding: 0; height: 100%; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; overflow: hidden; }
+        
+        /* Асосий контейнер */
+        .hero-container { display: flex; height: 100vh; width: 100%; }
+
+        /* Чап томон: Расм ва Тўқ сариқ блок */
+        .left-side { 
+            flex: 1; 
+            background: url('https://images.unsplash.com/photo-1542838132-92c53300491e?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80') no-repeat center center; 
+            background-size: cover;
+            position: relative;
+        }
+        .orange-badge {
+            position: absolute; top: 0; left: 50px;
+            background: #f39c12; color: white;
+            padding: 30px 20px; width: 180px; text-align: center;
+            font-weight: bold; font-size: 22px; text-transform: uppercase;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        /* Ўнг томон: Яшил фон ва Матнлар */
+        .right-side { 
+            flex: 1.2; 
+            background: #27ae60; 
+            display: flex; flex-direction: column; 
+            justify-content: center; padding: 0 80px; color: white;
+            position: relative;
+        }
+
+        /* Юқори меню тугмалари */
+        .top-nav {
+            position: absolute; top: 30px; right: 40px;
+            display: flex; gap: 15px; align-items: center;
+        }
+        .nav-btn {
+            background: rgba(255,255,255,0.2); color: white; border: 1px solid white;
+            padding: 8px 18px; border-radius: 25px; cursor: pointer;
+            text-decoration: none; font-size: 14px; font-weight: bold; transition: 0.3s;
+        }
+        .nav-btn:hover { background: white; color: #27ae60; }
+        .logo-text { font-size: 18px; font-weight: bold; margin-left: 20px; }
+
+        /* Марказий матнлар */
+        h1 { font-size: 70px; line-height: 1.1; margin: 0 0 20px 0; text-transform: uppercase; }
+        p { font-size: 20px; opacity: 0.9; max-width: 500px; line-height: 1.6; }
+        
+        .footer-line {
+            position: absolute; bottom: 0; left: 0; width: 100%;
+            background: #2ecc71; padding: 30px 80px; box-sizing: border-box;
+            font-size: 35px; font-weight: 300;
+        }
+
+        /* Мобил вариант учун */
+        @media (max-width: 768px) {
+            .hero-container { flex-direction: column; }
+            .left-side { height: 40%; }
+            .right-side { height: 60%; padding: 40px; }
+            h1 { font-size: 40px; }
+            .orange-badge { width: 120px; font-size: 14px; left: 20px; }
+            .top-nav { top: 10px; right: 10px; flex-wrap: wrap; justify-content: flex-end; }
+        }
+
+        @media (max-width: 600px) {
+    /* "ХУШ КЕЛИБСИЗ" матнини бир оз кичироқ қилиш, сиғмаса пастга тушиши учун */
+    h2, .welcome-text { 
+        font-size: 24px !important; 
+        line-height: 1.3;
+    }
+    
+    /* Тугмалар орасини очиш */
+    .button-group {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        padding: 0 20px;
+    }
+}
+    </style>
+</head>
+<body>
+
+    <div class="hero-container">
+        <div class="left-side">
+            <div class="orange-badge">
+                СИЗНИНГ БАРАКАЛИ ХАРИД БОЗОРИНГИЗ
+            </div>
+        </div>
+
+        <div class="right-side">
+            <div class="top-nav">
+                <a href="#" class="nav-btn">ЯНГИ МАҲСУЛОТЛАР</a>
+                <a class='nav-btn' href='/'>АСОСИЙ САҲИФА</a>
+                <a class='nav-btn' href='/login.html' style='background: #f39c12; border-color: #f39c12;'>ШАХСИЙ КАБИНЕТ</a>
+                <span class="logo-text">Qulay Bozor 🟢</span>
+            </div>
+
+            <h1>ХУШ КЕЛИБСИЗ <br> ҚУЛАЙ БОЗОРГА!</h1>
+            <p>Энг сара маҳсулотлар, сифатли хизмат ва ҳамёнбоп нархлар фақат бизда. Ҳар куни янги ва сархил неъматлар билан сизнинг хизматингиздамиз.</p>
+
+            <div class="footer-line">
+                Оқилона харид қилинг, соғлом яшанг!
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>

@@ -1,0 +1,180 @@
+
+ <!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Qulay Bozor - Kirish</title>
+    <style>
+        :root { 
+            --green: #2ecc71; 
+            --blue: #3498db; 
+            --dark: #121417; 
+            --card-bg: #1e2126;
+        }
+
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+        body { 
+            margin: 0; padding: 0; background: var(--dark); 
+            font-family: 'Segoe UI', Roboto, sans-serif; color: white;
+            display: flex; align-items: center; justify-content: center; min-height: 100vh;
+        }
+
+        .container { width: 100%; max-width: 400px; padding: 25px; text-align: center; }
+
+        h1 { font-size: 28px; letter-spacing: 1px; margin-bottom: 5px; color: var(--green); }
+        .subtitle { color: #888; font-size: 14px; margin-bottom: 30px; }
+
+        /* КАРТОЧКАЛАРНИНГ ЯНГИ ДИЗАЙНИ */
+        .card-wrapper { 
+            display: grid; 
+            grid-template-columns: 1fr 1fr; /* Иккитадан бўлиб чиқади */
+            gap: 15px; 
+        }
+
+        .card {
+            background: var(--card-bg); 
+            border: 1px solid #333;
+            border-radius: 20px; 
+            padding: 20px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            outline: none;
+        }
+
+        .card:active { transform: scale(0.95); background: #252a31; }
+
+        .card .icon { font-size: 35px; margin-bottom: 10px; display: block; }
+        
+        .card h2 { 
+            margin: 0; font-size: 14px; color: #eee; 
+            font-weight: 600; text-transform: uppercase; 
+        }
+
+        /* Раҳбар тугмасини алоҳида ажратиш */
+        .admin-card { 
+            grid-column: span 2; /* Бу тугма тўлиқ эгаллайди */
+            background: linear-gradient(135deg, #3498db, #2980b9);
+            border: none;
+            flex-direction: row !important;
+            height: 70px;
+        }
+        .admin-card h2 { color: white; margin-left: 10px; }
+
+        /* МОДАЛ ОЙНА */
+        #login-modal {
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.9); align-items: center; justify-content: center; z-index: 1000;
+            backdrop-filter: blur(5px);
+        }
+        .login-box {
+            background: white; padding: 30px; border-radius: 25px; 
+            width: 85%; max-width: 320px; text-align: center;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+        }
+        .login-box h3 { color: #222; margin: 0 0 20px 0; font-size: 20px; }
+
+        .pass-input {
+            width: 100%; padding: 15px; margin-bottom: 20px; 
+            border: 2px solid #eee; border-radius: 12px; 
+            font-size: 28px; text-align: center; color: #333; outline: none;
+        }
+        .pass-input:focus { border-color: var(--blue); }
+
+        .btn-enter {
+            width: 100%; padding: 15px; background: var(--green); color: white;
+            border: none; border-radius: 12px; font-weight: bold; font-size: 16px; cursor: pointer;
+        }
+
+        .btn-close { color: #888; margin-top: 20px; cursor: pointer; font-size: 14px; }
+
+        /* Экрани кичик телефонлар учун */
+        @media (max-width: 350px) {
+            .card-wrapper { grid-template-columns: 1fr; }
+            .admin-card { grid-column: span 1; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>QULAY BOZOR</h1>
+    <p class="subtitle">Кириш учун профилни танланг</p>
+
+   <div class="card-wrapper">
+        <div class="card" onclick="openLogin('KASSA 1')">
+            <span class="icon">👤</span>
+            <h2>КАССА 1</h2>
+        </div>
+        <div class="card" onclick="openLogin('KASSA 2')">
+            <span class="icon">👤</span>
+            <h2>КАССА 2</h2>
+        </div>
+        <div class="card" onclick="openLogin('OMBORCHI')">
+            <span class="icon">📦</span>
+            <h2>ОМБОРЧИ</h2>
+        </div>
+        <div class="card admin-card" onclick="openLogin('ADMIN')">
+            <span class="icon">🔑</span>
+            <h2>РАҲБАР (ADMIN)</h2>
+        </div>
+    </div>
+    
+    <div style="margin-top: 50px;">
+        <a href='/' style='color: #555; text-decoration: none; font-size: 13px;'>← АСОСИЙ САҲИФАГА ҚАЙТИШ</a>
+    </div>
+</div>
+
+<div id="login-modal">
+    <div class="login-box">
+        <h3 id="user-title">Кириш</h3>
+        <input type="password" id="pass-field" placeholder="••••" class="pass-input" inputmode="numeric">
+        <button class="btn-enter" onclick="checkPass()">КИРИШ</button>
+        <div class="btn-close" onclick="closeLogin()">Бекор қилиш</div>
+    </div>
+</div>
+
+<script>
+    let selectedUser = "";
+
+    function openLogin(role) {
+        selectedUser = role;
+        document.getElementById('user-title').innerText = role;
+        document.getElementById('login-modal').style.display = 'flex';
+        const input = document.getElementById('pass-field');
+        input.value = "";
+        setTimeout(() => input.focus(), 100);
+    }
+
+    function closeLogin() {
+        document.getElementById('login-modal').style.display = 'none';
+    }
+
+  function checkPass() {
+        const pass = document.getElementById('pass-field').value.trim();
+        
+        if (selectedUser === 'ADMIN' && pass === "7777") {
+            window.location.href = "admin.html";
+        } else if (selectedUser === 'OMBORCHI' && pass === "5555") { // Омборчи пароли
+            window.location.href = "omborchi.html";
+        } else if (selectedUser.includes('KASSA') && pass === "1234") {
+            window.location.href = "kassa_main.html?user=" + selectedUser;
+        } else {
+            alert("Пароль хато!");
+        }
+    }
+
+    // "Enter" тугмасини босганда кириш
+    document.getElementById('pass-field').addEventListener('keypress', function (e) {
+        if (e.key === 'Enter') checkPass();
+    });
+</script>
+
+</body>
+</html>
