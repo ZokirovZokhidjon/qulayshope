@@ -1,7 +1,8 @@
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html lang="uz">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Qulay Bozor - Director Panel</title>
     <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-database-compat.js"></script>
@@ -14,12 +15,18 @@
         .input-panel { background: #fff; padding: 15px; margin: 15px; border-radius: 12px; display: flex; gap: 10px; flex-wrap: wrap; }
         input { padding: 8px; border: 1px solid #ccc; border-radius: 6px; flex: 1; min-width: 150px; }
         .nav-tabs { display: flex; gap: 8px; padding: 10px; overflow-x: auto; }
-        .nav-tabs button { padding: 10px 15px; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; background: #ddd; }
+        .nav-tabs button { padding: 10px 15px; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; background: #ddd; white-space: nowrap; }
         .nav-tabs button.active { background: var(--blue); color: white; }
-        .table-container { background: white; padding: 15px; margin: 15px; border-radius: 12px; }
-        table { width: 100%; border-collapse: collapse; }
-        th, td { padding: 12px; border-bottom: 1px solid #eee; }
+        
+        /* Жадвал учун тўғриланган стиль */
+        .table-container { background: white; padding: 15px; margin: 15px; border-radius: 12px; overflow-x: auto; }
+        table { width: 100%; border-collapse: collapse; min-width: 500px; }
+        th, td { padding: 12px; border-bottom: 1px solid #eee; text-align: left; }
         .btn-act { padding: 5px 10px; border: none; border-radius: 4px; cursor: pointer; background: var(--red); color: white; }
+
+        @media (max-width: 600px) {
+            .input-panel { flex-direction: column; }
+        }
     </style>
 </head>
 <body>
@@ -46,7 +53,7 @@
     <input type="text" id="in-name" placeholder="Номи / Исм">
     <input type="text" id="in-desc" placeholder="Изоҳ (mijoz/dukon)">
     <input type="number" id="in-amount" placeholder="Сумма">
-    <button onclick="saveData()" style="background:var(--green); color:white; border:none; padding:8px 15px; border-radius:6px;">Сақлаш</button>
+    <button onclick="saveData()" style="background:var(--green); color:white; border:none; padding:8px 15px; border-radius:6px; cursor:pointer;">Сақлаш</button>
 </div>
 
 <div class="table-container">
@@ -55,7 +62,7 @@
 
 <script>
     const firebaseConfig = { apiKey: "AIzaSyAt5qPDDjM8o1sFw9zJ2PCA8Md1Su2zybs", databaseURL: "https://qulaybozor-16d03-default-rtdb.firebaseio.com", projectId: "qulaybozor-16d03" };
-    firebase.initializeApp(firebaseConfig);
+    if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
     const db = firebase.database();
     let currentTab = 'sales';
 
@@ -66,33 +73,8 @@
         render(); 
     }
 
-    function saveData() {
-        const name = document.getElementById('in-name').value;
-        const desc = document.getElementById('in-desc').value.toLowerCase().trim();
-        const amount = Number(document.getElementById('in-amount').value);
-        if(!name || !amount) return alert("Маълумотларни тўлдиринг!");
-        
-        if (currentTab === 'debts') {
-            const folder = desc.includes('dukon') ? 'dukon' : 'mijoz';
-            db.ref('debts/' + folder).push({ name, amount, date: new Date().toLocaleDateString() });
-        } else {
-            db.ref(currentTab).push({ name, desc, amount, date: new Date().toLocaleDateString() });
-        }
-        document.getElementById('in-name').value = "";
-        document.getElementById('in-desc').value = "";
-        document.getElementById('in-amount').value = "";
-    }
-
-    function deleteItem(id, folder = "") { 
-        if(confirm("Ўчирасизми?")) {
-            const path = folder ? `debts/${folder}/${id}` : `${currentTab}/${id}`;
-            db.ref(path).remove();
-        }
-    }
-
-    // admin.html даги render() функцияси ичидаги омбор қисми:
-function render() {
-        db.ref().off(); // Эски эшитувчиларни ўчириш
+    function render() {
+        db.ref().off();
         const b = document.getElementById('t-body');
         const h = document.getElementById('t-head');
         b.innerHTML = ""; 
@@ -124,13 +106,36 @@ function render() {
                 });
             });
         } else {
-            // Харажатлар учун
             h.innerHTML = "<th>НОМИ</th><th>ИЗОҲ</th><th>СУММА</th><th>АМАЛ</th>";
             db.ref('expenses').on('value', snap => {
                 b.innerHTML = "";
                 const data = snap.val();
                 if (data) Object.entries(data).forEach(([id, x]) => b.innerHTML += `<tr><td>${x.name || '---'}</td><td>${x.desc || '---'}</td><td>${Number(x.amount || 0).toLocaleString()}</td><td><button class="btn-act" onclick="deleteItem('${id}')">Ўчириш</button></td></tr>`);
             });
+        }
+    }
+
+    function saveData() {
+        const name = document.getElementById('in-name').value;
+        const desc = document.getElementById('in-desc').value.toLowerCase().trim();
+        const amount = Number(document.getElementById('in-amount').value);
+        if(!name || !amount) return alert("Маълумотларни тўлдиринг!");
+        
+        if (currentTab === 'debts') {
+            const folder = desc.includes('dukon') ? 'dukon' : 'mijoz';
+            db.ref('debts/' + folder).push({ name, amount, date: new Date().toLocaleDateString() });
+        } else {
+            db.ref(currentTab).push({ name, desc, amount, date: new Date().toLocaleDateString() });
+        }
+        document.getElementById('in-name').value = "";
+        document.getElementById('in-desc').value = "";
+        document.getElementById('in-amount').value = "";
+    }
+
+    function deleteItem(id, folder = "") { 
+        if(confirm("Ўчирасизми?")) {
+            const path = folder ? `debts/${folder}/${id}` : `${currentTab}/${id}`;
+            db.ref(path).remove();
         }
     }
 
