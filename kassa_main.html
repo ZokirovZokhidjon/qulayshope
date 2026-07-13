@@ -3,78 +3,78 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Qulay Bozor - Firebase Pro Max</title>
+    <title>Qulay Bozor - Kassa</title>
     <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-database-compat.js"></script>
     <style>
-        :root { --blue: #0088cc; --green: #27ae60; --red: #e74c3c; --dark: #222529; --light: #f4f7f6; }
-        body { font-family: 'Segoe UI', sans-serif; margin: 0; background: var(--light); display: flex; flex-direction: column; min-height: 100vh; }
-        header { background: var(--dark); color: white; padding: 10px 20px; display: flex; justify-content: space-between; align-items: center; }
-        .container { display: flex; flex: 1; flex-wrap: wrap; }
-        .sidebar { width: 100%; max-width: 350px; background: white; border-right: 1px solid #ddd; padding: 20px; }
-        .main { flex: 1; padding: 20px; overflow-x: auto; }
-        .nav { display: flex; gap: 5px; margin-bottom: 20px; }
-        .nav button { flex: 1; padding: 12px; border: none; background: #eee; cursor: pointer; font-weight: bold; border-radius: 5px; }
+        :root { --blue: #0088cc; --green: #27ae60; --red: #e74c3c; --dark: #222529; }
+        body { font-family: 'Segoe UI', sans-serif; margin: 0; background: #f4f7f6; }
+        header { background: var(--dark); color: white; padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; }
+        .container { display: flex; flex-wrap: wrap; padding: 20px; gap: 20px; }
+        .sidebar { width: 350px; background: white; padding: 20px; border-radius: 10px; }
+        .main { flex: 1; background: white; padding: 20px; border-radius: 10px; overflow-x: auto; }
+        .nav { display: grid; grid-template-columns: 1fr 1fr; gap: 5px; margin-bottom: 20px; }
+        .nav button { padding: 10px; border: none; background: #eee; cursor: pointer; border-radius: 5px; }
         .nav button.active { background: var(--blue); color: white; }
-        .form-group { margin-bottom: 15px; }
-        input, select { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box; }
-        .btn { width: 100%; padding: 10px; border: none; border-radius: 5px; color: white; font-weight: bold; cursor: pointer; margin-top: 5px; font-size: 12px; }
-        table { width: 100%; border-collapse: collapse; background: white; }
-        th, td { padding: 10px; border-bottom: 1px solid #eee; text-align: left; font-size: 14px; }
-        img{ border-radius: 50%; border: 2px solid var(--red); }
+        input, select { width: 100%; padding: 10px; margin-bottom: 10px; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box; }
+        .btn { width: 100%; padding: 10px; border: none; border-radius: 5px; color: white; cursor: pointer; }
+        table { width: 100%; border-collapse: collapse; min-width: 400px; }
+        th, td { padding: 10px; border-bottom: 1px solid #eee; text-align: left; }
     </style>
 </head>
 <body>
 
 <header>
-    <div style="font-size: 18px; font-weight: bold;">QULAY BOZOR | РАҲБАР</div> 
-    <a href="index.html" style="color: gold; text-decoration: none;">Чиқиш</a>
+    <div>QULAY BOZOR | КАССА</div>
+    <a href="index.html" style="color: gold;">Чиқиш</a>
 </header>
 
 <div class="container">
     <div class="sidebar">
         <div class="nav">
-            <button id="tab-kassa" class="active" onclick="showTab('kassa')">КАССА</button>
+            <button id="tab-kassa" onclick="showTab('kassa')">КАССА</button>
             <button id="tab-ombor" onclick="showTab('ombor')">ОМБОР</button>
             <button id="tab-qarz" onclick="showTab('qarz')">ҚАРЗЛАР</button>
+            <button id="tab-xarajat" onclick="showTab('xarajat')">ХАРАЖАТ</button>
         </div>
         
         <div id="f-kassa">
-            <input type="text" id="k-name" placeholder="Товар номи" class="form-group">
-            <input type="number" id="k-qty" value="1" class="form-group">
-            <input type="number" id="k-price" placeholder="Нархи" class="form-group">
-            <button class="btn" style="background: var(--blue);" onclick="processSale()">СОТИШ</button>
+            <input type="text" id="k-cashier" placeholder="Кассирнинг исми">
+            <input type="text" id="k-shift" placeholder="Смена вақти (06:00 - 18:00)">
+            <input type="number" id="k-price" placeholder="Жами савдо суммаси">
+            <button class="btn" style="background: var(--blue);" onclick="sendShiftReport()">СМЕНАНИ ТОПШИРИШ</button>
         </div>
+
         <div id="f-ombor" style="display:none">
-            <input type="text" id="o-name" placeholder="Товар номи" class="form-group">
-            <input type="number" id="o-sell" placeholder="Сотиш нархи" class="form-group">
-            <button class="btn" style="background: var(--green);" onclick="addToInventory()">ОМБОРГА ҚЎШИШ</button>
+            <input type="text" id="o-name" placeholder="Товар номи">
+            <input type="number" id="o-qty" placeholder="Миқдори">
+            <select id="o-unit"><option>Дона</option><option>Кг</option><option>Грамм</option></select>
+            <input type="number" id="o-price" placeholder="Нархи">
+            <button class="btn" style="background: var(--green);" onclick="addFullData('stock', 'o')">ОМБОРГА ҚЎШИШ</button>
         </div>
+
         <div id="f-qarz" style="display:none">
-            <input type="text" id="q-name" placeholder="Исм" class="form-group">
-            <input type="number" id="q-amount" placeholder="Сумма" class="form-group">
-            <select id="q-type" class="form-group">
-                <option value="Мижоз қарзи">Мижоз қарзи</option>
-                <option value="Дўкон қарзи">Дўкон қарзи</option>
-            </select>
-            <button class="btn" style="background: var(--red);" onclick="registerDebt()">ҚАРЗ ЁЗИШ</button>
+            <input type="text" id="q-name" placeholder="Исм">
+            <input type="number" id="q-amount" placeholder="Сумма">
+            <select id="q-type"><option>Мижоз қарзи</option><option>Дўкон қарзи</option></select>
+            <button class="btn" style="background: var(--red);" onclick="addDebt()">ҚАРЗ ЁЗИШ</button>
+        </div>
+
+        <div id="f-xarajat" style="display:none">
+            <input type="text" id="x-name" placeholder="Харажат номи">
+            <input type="number" id="x-amount" placeholder="Суммаси">
+            <button class="btn" style="background: var(--red);" onclick="addExpense()">ХАРАЖАТ ЁЗИШ</button>
         </div>
     </div>
+    
     <div class="main">
-        <table>
-            <thead id="t-head"></thead>
-            <tbody id="t-body"></tbody>
-        </table>
+        <table><thead><tr id="t-head"></tr></thead><tbody id="t-body"></tbody></table>
     </div>
 </div>
 
 <script>
-    const firebaseConfig = {
-        apiKey: "AIzaSyAt5qPDDjM8o1sFw9zJ2PCA8Md1Su2zybs",
-        databaseURL: "https://qulaybozor-16d03-default-rtdb.firebaseio.com",
-        projectId: "qulaybozor-16d03"
-    };
-    firebase.initializeApp(firebaseConfig);
+    const firebaseConfig = { apiKey: "AIzaSyAt5qPDDjM8o1sFw9zJ2PCA8Md1Su2zybs", databaseURL: "https://qulaybozor-16d03-default-rtdb.firebaseio.com", projectId: "qulaybozor-16d03" };
+    if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
     const db = firebase.database();
     let currentTab = 'kassa';
 
@@ -83,50 +83,71 @@
         document.querySelectorAll('.nav button').forEach(b => b.classList.toggle('active', b.id === 'tab-' + name));
         document.querySelectorAll('.sidebar > div[id^="f-"]').forEach(f => f.style.display = 'none');
         document.getElementById('f-' + name).style.display = 'block';
-        loadRealtimeData();
+        loadData();
     }
 
-    function loadRealtimeData() {
-        const path = (currentTab === 'kassa') ? 'sales' : (currentTab === 'ombor' ? 'stock' : 'debts');
+    function sendShiftReport() {
+        let shift = document.getElementById('k-shift').value;
+        let price = document.getElementById('k-price').value;
+        let cashier = document.getElementById('k-cashier').value;
+        if(!shift || !price || !cashier) return alert("Маълумотларни тўлдиринг!");
+        db.ref('sales').push({ shift, price, cashier, date: new Date().toLocaleString() }).then(() => alert("Сақланди!"));
+    }
+    
+    function addFullData(path, p) {
+        db.ref(path).push({ name: document.getElementById(p+'-name').value, qty: document.getElementById(p+'-qty').value + " " + document.getElementById(p+'-unit').value, price: document.getElementById(p+'-price').value });
+    }
+
+    function addDebt() {
+        const name = document.getElementById('q-name').value;
+        const amount = document.getElementById('q-amount').value;
+        const path = document.getElementById('q-type').value.includes('Дўкон') ? 'dukon' : 'mijoz';
+        db.ref('debts/' + path).push({ name, amount, date: new Date().toLocaleDateString() });
+        alert("Қарз сақланди!");
+    }
+
+    function addExpense() {
+        db.ref('expenses').push({ name: document.getElementById('x-name').value, amount: document.getElementById('x-amount').value });
+        alert("Харажат сақланди!");
+    }
+
+    function loadData() {
+        db.ref().off();
+        const body = document.getElementById('t-body');
         const head = document.getElementById('t-head');
-        
-        db.ref(path).on('value', (snap) => {
-            const body = document.getElementById('t-body');
-            body.innerHTML = "";
-            const data = snap.val() ? Object.entries(snap.val()) : [];
-            
-            if(currentTab === 'kassa') {
-                head.innerHTML = "<tr><th>Товар</th><th>Жами</th><th>Амал</th></tr>";
-                data.forEach(([id, v]) => body.innerHTML += `<tr><td>${v.name}</td><td>${v.total}</td><td><button onclick="editSale('${id}', '${v.name}', ${v.total})">✏️</button> <button onclick="deleteItem('sales','${id}')">🗑️</button></td></tr>`);
-            } else if(currentTab === 'qarz') {
-                head.innerHTML = "<tr><th>Исм</th><th>Тур</th><th>Сумма</th><th>Амал</th></tr>";
-                data.forEach(([id, v]) => body.innerHTML += `<tr><td>${v.name}</td><td>${v.type}</td><td>${v.amount}</td><td><button onclick="payDebt('${id}', ${v.amount})">Тўлаш</button> <button onclick="deleteItem('debts','${id}')">🗑️</button></td></tr>`);
-            } else {
-                head.innerHTML = "<tr><th>Товар</th><th>Нарх</th><th>Амал</th></tr>";
-                data.forEach(([id, v]) => body.innerHTML += `<tr><td>${v.name}</td><td>${v.sell}</td><td><button onclick="deleteItem('stock','${id}')">🗑️</button></td></tr>`);
-            }
-        });
-    }
+        body.innerHTML = "";
 
-    function editSale(id, name, currentTotal) {
-        let newTotal = prompt("Товар: " + name + "\nЯнги суммани киритинг:", currentTotal);
-        if (newTotal) db.ref('sales/' + id).update({ total: parseFloat(newTotal) });
-    }
-
-    function payDebt(id, currentAmount) {
-        let pay = prompt("Қанча тўланди? (Қолган қарз: " + currentAmount + ")", currentAmount);
-        if (pay) {
-            let newAmount = currentAmount - parseFloat(pay);
-            if (newAmount <= 0) db.ref('debts/' + id).remove();
-            else db.ref('debts/' + id).update({ amount: newAmount });
+        if (currentTab === 'kassa') {
+            head.innerHTML = "<th>Сана</th><th>Кассир</th><th>Смена</th><th>Сумма</th><th>Амал</th>";
+            db.ref('sales').on('value', snap => {
+                body.innerHTML = "";
+                const data = snap.val();
+                if(data) Object.entries(data).forEach(([id, v]) => body.innerHTML += `<tr><td>${v.date}</td><td>${v.cashier}</td><td>${v.shift}</td><td>${v.price}</td><td><button onclick="db.ref('sales/${id}').remove()">🗑️</button></td></tr>`);
+            });
+        } else if (currentTab === 'qarz') {
+            head.innerHTML = "<th>Исм</th><th>Тури</th><th>Сумма</th><th>Амал</th>";
+            db.ref('debts').on('value', snap => {
+                body.innerHTML = "";
+                const data = snap.val();
+                if (data?.mijoz) Object.entries(data.mijoz).forEach(([id, v]) => body.innerHTML += `<tr><td>${v.name}</td><td>Мижоз</td><td>${v.amount}</td><td><button onclick="db.ref('debts/mijoz/${id}').remove()">🗑️</button></td></tr>`);
+                if (data?.dukon) Object.entries(data.dukon).forEach(([id, v]) => body.innerHTML += `<tr><td>${v.name}</td><td>Дўкон</td><td>${v.amount}</td><td><button onclick="db.ref('debts/dukon/${id}').remove()">🗑️</button></td></tr>`);
+            });
+        } else if (currentTab === 'ombor') {
+            head.innerHTML = "<th>Номи</th><th>Миқдор</th><th>Нарх</th><th>Амал</th>";
+            db.ref('stock').on('value', snap => {
+                body.innerHTML = "";
+                const data = snap.val();
+                if(data) Object.entries(data).forEach(([id, v]) => body.innerHTML += `<tr><td>${v.name}</td><td>${v.qty}</td><td>${v.price}</td><td><button onclick="db.ref('stock/${id}').remove()">🗑️</button></td></tr>`);
+            });
+        } else {
+            head.innerHTML = "<th>Номи</th><th>Сумма</th><th>Амал</th>";
+            db.ref('expenses').on('value', snap => {
+                body.innerHTML = "";
+                const data = snap.val();
+                if(data) Object.entries(data).forEach(([id, v]) => body.innerHTML += `<tr><td>${v.name}</td><td>${v.amount}</td><td><button onclick="db.ref('expenses/${id}').remove()">🗑️</button></td></tr>`);
+            });
         }
     }
-
-    function deleteItem(path, id) { if(confirm("Ўчирмоқчимисиз?")) db.ref(path + '/' + id).remove(); }
-    function processSale() { db.ref('sales').push({ name: document.getElementById('k-name').value, total: document.getElementById('k-qty').value * document.getElementById('k-price').value }); }
-    function registerDebt() { db.ref('debts').push({ name: document.getElementById('q-name').value, amount: parseFloat(document.getElementById('q-amount').value), type: document.getElementById('q-type').value }); }
-    function addToInventory() { db.ref('stock').push({ name: document.getElementById('o-name').value, sell: document.getElementById('o-sell').value }); }
-    
     showTab('kassa');
 </script>
 </body>

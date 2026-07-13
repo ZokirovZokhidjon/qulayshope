@@ -61,17 +61,37 @@
     if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
     const db = firebase.database();
 
-    function saveToStock() {
-        const name = document.getElementById('o-name').value;
-        const qty = document.getElementById('o-qty').value;
-        const unit = document.getElementById('o-unit').value;
-        const price = document.getElementById('o-price').value;
-        if(!name || !qty || !price) return alert("Барча майдонларни тўлдиринг!");
-        db.ref('stock').push({ name, qty: qty + " " + unit, price, date: new Date().toLocaleTimeString() });
-        alert("Товар қўшилди!");
-        document.getElementById('o-name').value = ""; 
-    }
+function saveToStock() {
+    const name = document.getElementById('o-name').value;
+    const qty = document.getElementById('o-qty').value;
+    const unit = document.getElementById('o-unit').value;
+    const price = document.getElementById('o-price').value;
+    
+    if(!name || !qty || !price) return alert("Барча майдонларни тўлдиринг!");
+    
+    // Кун номларини аниқлаш
+    const days = ["Якшанба", "Душанба", "Сешанба", "Чоршанба", "Пайшанба", "Жума", "Шанба"];
+    const now = new Date();
+    
+    // Тўлиқ сана ва кун номини шакллантириш
+    const dayName = days[now.getDay()]; // Ҳафта кунини олиш
+    const dateTime = now.getFullYear() + "-" + 
+                     String(now.getMonth() + 1).padStart(2, '0') + "-" + 
+                     String(now.getDate()).padStart(2, '0') + " " + 
+                     dayName + " " + 
+                     String(now.getHours()).padStart(2, '0') + ":" + 
+                     String(now.getMinutes()).padStart(2, '0');
 
+    db.ref('stock').push({ 
+        name, 
+        qty: qty + " " + unit, 
+        price, 
+        date: dateTime // Энди бунда сана, кун номи ва вақт бор
+    });
+    
+    alert("Товар ва ҳафта куни билан қўшилди!");
+    // ... inputларни тозалаш ...
+}
     // ТАҲРИРЛАШ ФУНКЦИЯСИ (Фақат миқдор ва нарх учун)
     function editItem(id, name, qty, price) {
         let parts = qty.split(' ');
@@ -94,23 +114,23 @@
         if(confirm("Ўчирмоқчимисиз?")) db.ref('stock/' + id).remove();
     }
 
-    db.ref('stock').on('value', snap => {
-        const body = document.getElementById('stock-body');
-        body.innerHTML = "";
-        snap.forEach(s => {
-            const v = s.val(), id = s.key;
-            body.innerHTML += `<tr>
-                <td style="color:#666">${v.date || '--'}</td>
-                <td>${v.name}</td>
-                <td>${v.qty}</td>
-                <td style="color:var(--green)">${Number(v.price).toLocaleString()}</td>
-                <td>
-                    <button class="btn-icon" style="background:#252a31; color:white" onclick="editItem('${id}', '${v.name}', '${v.qty}', '${v.price}')">✏️</button>
-                    <button class="btn-icon" style="background:#4a1e1e; color:white" onclick="deleteItem('${id}')">🗑️</button>
-                </td>
-            </tr>`;
-        });
+db.ref('stock').on('value', snap => {
+    const body = document.getElementById('stock-body');
+    body.innerHTML = "";
+    snap.forEach(s => {
+        const v = s.val(), id = s.key;
+        body.innerHTML += `<tr>
+            <td style="color:#aaa; font-size: 12px;">${v.date || '--'}</td>
+            <td>${v.name}</td>
+            <td>${v.qty}</td>
+            <td style="color:var(--green)">${Number(v.price).toLocaleString()}</td>
+            <td>
+                <button class="btn-icon" style="background:#252a31; color:white" onclick="editItem('${id}', '${v.name}', '${v.qty}', '${v.price}')">✏️</button>
+                <button class="btn-icon" style="background:#4a1e1e; color:white" onclick="deleteItem('${id}')">🗑️</button>
+            </td>
+        </tr>`;
     });
+});
 </script>
 </body>
 </html>
