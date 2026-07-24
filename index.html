@@ -5,8 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Qulay Market - Маҳсулотлар буюртмаси</title>
     <style>
-        body, html { margin: 0; padding: 0; min-height: 100%; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; overflow-x: hidden; }
-        
         .hero-container { display: flex; min-height: 100vh; width: 100%; }
 
         .left-side { 
@@ -163,6 +161,74 @@
         }
         .submit-order-btn:hover { background: #d35400; }
 
+        /* Мобил илова карточкаси ва инструкция стили */
+        .app-card-section {
+            margin-top: 25px;
+            background: rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(10px);
+            padding: 20px;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+        }
+        .app-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        .app-card-title {
+            font-size: 16px;
+            font-weight: bold;
+            text-transform: uppercase;
+            color: #f39c12;
+        }
+        .app-download-btn {
+            background: #e67e22;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 25px;
+            cursor: pointer;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: bold;
+            transition: 0.3s;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            display: inline-block;
+        }
+        .app-download-btn:hover {
+            background: #d35400;
+        }
+
+        .instruction-cards {
+            display: flex;
+            gap: 15px;
+        }
+        .instruction-card {
+            flex: 1;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            font-size: 13px;
+            line-height: 1.4;
+            position: relative;
+        }
+        .step-number {
+            position: absolute;
+            top: -10px;
+            left: 15px;
+            background: #f39c12;
+            color: white;
+            font-size: 11px;
+            font-weight: bold;
+            padding: 2px 8px;
+            border-radius: 10px;
+        }
+
         .footer-line {
             margin-top: 20px;
             padding-top: 15px; font-size: 16px; font-weight: 300; border-top: 1px solid rgba(255,255,255,0.3);
@@ -176,6 +242,8 @@
             .client-info-box { flex-direction: column; gap: 10px; }
             .top-nav { justify-content: center; }
             .logo-text { margin-left: 0; width: 100%; text-align: center; margin-top: 5px; }
+            .instruction-cards { flex-direction: column; gap: 12px; }
+            .app-card-header { flex-direction: column; align-items: stretch; text-align: center; }
         }
     </style>
 </head>
@@ -193,7 +261,6 @@
                 <a href="#" class="nav-btn">МАҲСУЛОТЛАР БУЮРТМАСИ</a>
                 <a class="nav-btn" href="/">АСОСИЙ САҲИФА</a>
                 <a class="nav-btn" href="/login.html" style="background: #f39c12; border: none;">ШАХСИЙ КАБИНЕТ</a>
-                <a class="nav-btn" href="/qulaymarket-777.apk" style="background: #e67e22; border: none;">МОБИЛ ИЛОВА</a>
                 <span class="logo-text">Qulay market-777 🟢</span>
             </div>
             
@@ -278,6 +345,25 @@
                         </div>
                     </form>
                 </div>
+
+                <!-- Мобил илова карточкаси ва ўрнатиш кўрсатмаси -->
+                <div class="app-card-section">
+                    <div class="app-card-header">
+                        <span class="app-card-title">📱 Мобил иловани юклаб олиш ва ўрнатиш</span>
+                        <a href="/qulaymarket-777.apk" class="app-download-btn">📲 Мобил иловани юклаб олиш</a>
+                    </div>
+                    <div class="instruction-cards">
+                        <div class="instruction-card">
+                            <span class="step-number">1-Қадам</span>
+                            <p style="margin-top: 8px; margin-bottom: 0;">Чиққан ойнада <b>«Я согласен / Розиман»</b> деган жойга галочка қўйинг.</p>
+                        </div>
+                        <div class="instruction-card">
+                            <span class="step-number">2-Қадам</span>
+                            <p style="margin-top: 8px; margin-bottom: 0;"><b>«Подробней / Батафсил»</b> тугмасини босиб, сўнгра <b>«Всё равно установить / Барибир ўрнатиш»</b> тугмасини босиб иловани ўрнатинг.</p>
+                        </div>
+                    </div>
+                </div>
+
             </div>
 
             <div class="footer-line">
@@ -286,114 +372,114 @@
         </div>
     </div>
 
-<script>
-    // Жадвалга янги қатор қўшиш
-    function addRow() {
-        const tableBody = document.querySelector('#dynamicTable tbody');
-        const newRow = document.createElement('tr');
-        
-        newRow.innerHTML = `
-            <td>
-                <select class="table-select">
-                    <option value="1кг">1кг</option>
-                    <option value="2кг">2кг</option>
-                    <option value="5кг">5кг</option>
-                    <option value="500гр">500гр</option>
-                    <option value="1дона">1дона</option>
-                </select>
-            </td>
-            <td><input type="text" class="table-input" placeholder="Маҳсулот номи..." required></td>
-            <td style="text-align: center;">
-                <div class="action-buttons">
-                    <button type="button" class="row-edit-btn" onclick="toggleEdit(this)">Сақлаш</button>
-                    <button type="button" class="row-delete-btn" onclick="removeRow(this)">Ўчириш</button>
-                </div>
-            </td>
-        `;
-        tableBody.appendChild(newRow);
-    }
-
-    // Қаторни таҳрирлаш ва сақлаш функцияси
-    function toggleEdit(button) {
-        const row = button.closest('tr');
-        const select = row.querySelector('.table-select');
-        const input = row.querySelector('.table-input');
-
-        if (select.disabled) {
-            select.disabled = false;
-            input.removeAttribute('readonly');
-            input.focus();
-            button.textContent = "Сақлаш";
-            button.style.background = "#27ae60";
-        } else {
-            select.disabled = true;
-            input.setAttribute('readonly', true);
-            button.textContent = "Таҳрир";
-            button.style.background = "#2980b9";
+    <script>
+        // Жадвалга янги қатор қўшиш
+        function addRow() {
+            const tableBody = document.querySelector('#dynamicTable tbody');
+            const newRow = document.createElement('tr');
+            
+            newRow.innerHTML = `
+                <td>
+                    <select class="table-select">
+                        <option value="1кг">1кг</option>
+                        <option value="2кг">2кг</option>
+                        <option value="5кг">5кг</option>
+                        <option value="500гр">500гр</option>
+                        <option value="1дона">1дона</option>
+                    </select>
+                </td>
+                <td><input type="text" class="table-input" placeholder="Маҳсулот номи..." required></td>
+                <td style="text-align: center;">
+                    <div class="action-buttons">
+                        <button type="button" class="row-edit-btn" onclick="toggleEdit(this)">Сақлаш</button>
+                        <button type="button" class="row-delete-btn" onclick="removeRow(this)">Ўчириш</button>
+                    </div>
+                </td>
+            `;
+            tableBody.appendChild(newRow);
         }
-    }
 
-    // Қаторни ўчириш функцияси
-    function removeRow(button) {
-        const row = button.closest('tr');
-        const tbody = row.closest('tbody');
-        if (tbody.children.length > 1) {
-            row.remove();
-        } else {
-            alert("Камида битта маҳсулот қатори қолиши керак!");
-        }
-    }
+        // Қаторни таҳрирлаш ва сақлаш функцияси
+        function toggleEdit(button) {
+            const row = button.closest('tr');
+            const select = row.querySelector('.table-select');
+            const input = row.querySelector('.table-input');
 
-    // Telegram ботга юбориш функцияси
-    function sendOrderToTelegram(event) {
-        event.preventDefault();
-        
-        const clientName = document.getElementById('clientName').value;
-        const clientPhone = document.getElementById('clientPhone').value;
-        const rows = document.querySelectorAll('#dynamicTable tbody tr');
-        
-        let orderDetails = `📦 ЯНГИ БУЮРТМА:\n\n👤 Исм: ${clientName}\n📞 Тел: ${clientPhone}\n\n🛒 Маҳсулотлар:\n`;
-
-        rows.forEach((row, index) => {
-            const qty = row.cells[0].querySelector('select').value;
-            const product = row.cells[1].querySelector('input').value;
-
-            orderDetails += `${index + 1}. ${product} - ${qty}\n`;
-        });
-
-        const token = "8834602502:AAHNGHOnTt4-VxSAoDQdqU4JxICtr250UaY";
-        const chatId = "-5338808425";
-        
-        const url = `https://api.telegram.org/bot${token}/sendMessage`;
-        
-        const data = {
-            chat_id: chatId,
-            text: orderDetails
-        };
-
-        fetch(url, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(data)
-        })
-        .then(response => response.json())
-        .then(result => {
-            if (result.ok) {
-                alert("Буюртмангиз муваффақиятли Telegram гуруҳга юборилди!");
-                document.getElementById('orderForm').reset();
+            if (select.disabled) {
+                select.disabled = false;
+                input.removeAttribute('readonly');
+                input.focus();
+                button.textContent = "Сақлаш";
+                button.style.background = "#27ae60";
             } else {
-                alert("Хатолик юз берди. Бот гуруҳда админ эканлигини текширинг.");
+                select.disabled = true;
+                input.setAttribute('readonly', true);
+                button.textContent = "Таҳрир";
+                button.style.background = "#2980b9";
             }
-        })
-        .catch(error => {
-            console.error('Хато:', error);
-            alert("Интернет тармоғида хатолик юз берди.");
-        });
-    }
-</script>
+        }
 
-<script src="//taplink.cc/id:14803624/widget/" async></script>
+        // Қаторни ўчириш функцияси
+        function removeRow(button) {
+            const row = button.closest('tr');
+            const tbody = row.closest('tbody');
+            if (tbody.children.length > 1) {
+                row.remove();
+            } else {
+                alert("Камида битта маҳсулот қатори қолиши керак!");
+            }
+        }
+
+        // Telegram ботга юбориш функцияси
+        function sendOrderToTelegram(event) {
+            event.preventDefault();
+            
+            const clientName = document.getElementById('clientName').value;
+            const clientPhone = document.getElementById('clientPhone').value;
+            const rows = document.querySelectorAll('#dynamicTable tbody tr');
+            
+            let orderDetails = `📦 ЯНГИ БУЮРТМА:\n\n👤 Исм: ${clientName}\n📞 Тел: ${clientPhone}\n\n🛒 Маҳсулотлар:\n`;
+
+            rows.forEach((row, index) => {
+                const qty = row.cells[0].querySelector('select').value;
+                const product = row.cells[1].querySelector('input').value;
+
+                orderDetails += `${index + 1}. ${product} - ${qty}\n`;
+            });
+
+            const token = "8834602502:AAHNGHOnTt4-VxSAoDQdqU4JxICtr250UaY";
+            const chatId = "-5338808425";
+            
+            const url = `https://api.telegram.org/bot${token}/sendMessage`;
+            
+            const data = {
+                chat_id: chatId,
+                text: orderDetails
+            };
+
+            fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            })
+            .then(response => response.json())
+            .then(result => {
+                if (result.ok) {
+                    alert("Буюртмангиз муваффақиятли Telegram гуруҳга юборилди!");
+                    document.getElementById('orderForm').reset();
+                } else {
+                    alert("Хатолик юз берди. Бот гуруҳда админ эканлигини текширинг.");
+                }
+            })
+            .catch(error => {
+                console.error('Хато:', error);
+                alert("Интернет тармоғида хатолик юз берди.");
+            });
+        }
+    </script>
+
+    <script src="//taplink.cc/id:14803624/widget/" async></script>
 </body>
 </html>
