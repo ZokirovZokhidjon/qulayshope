@@ -3,14 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Qulay Bozor - Welcome</title>
+    <title>Qulay Market - Маҳсулотлар буюртмаси</title>
     <style>
         body, html { margin: 0; padding: 0; min-height: 100%; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; overflow-x: hidden; }
         
-        /* Асосий контейнер */
         .hero-container { display: flex; min-height: 100vh; width: 100%; }
 
-        /* Чап томон */
         .left-side { 
             flex: 1; 
             background: url('https://images.unsplash.com/photo-1542838132-92c53300491e?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80') no-repeat center center; 
@@ -26,18 +24,16 @@
             box-shadow: 0 5px 15px rgba(0,0,0,0.2);
         }
 
-        /* Ўнг томон */
         .right-side { 
-            flex: 1.2; 
+            flex: 1.3; 
             background: #27ae60; 
             display: flex; flex-direction: column; 
-            justify-content: center; padding: 0 80px; color: white;
+            justify-content: center; padding: 30px 50px; color: white;
             position: relative;
         }
 
-        /* Юқори меню */
         .top-nav {
-            padding-top: 30px;
+            padding-bottom: 20px;
             display: flex; gap: 15px; align-items: center; flex-wrap: wrap;
         }
         .nav-btn {
@@ -46,26 +42,138 @@
             text-decoration: none; font-size: 14px; font-weight: bold; transition: 0.3s;
         }
         .nav-btn:hover { background: white; color: #27ae60; }
-        .logo-text { font-size: 18px; font-weight: bold; margin-left: 20px; }
+        .logo-text { font-size: 18px; font-weight: bold; margin-left: auto; }
 
-        /* Матнлар */
-        .content-area { margin: 50px 0; }
-        h1 { font-size: 60px; line-height: 1.1; margin: 0 0 20px 0; text-transform: uppercase; }
-        p { font-size: 20px; opacity: 0.9; max-width: 500px; line-height: 1.6; }
-        
-        /* Footer */
-        .footer-line {
-            padding: 20px 0; font-size: 20px; font-weight: 300; border-top: 1px solid rgba(255,255,255,0.3);
+        h1 { font-size: 28px; margin: 0 0 15px 0; text-transform: uppercase; }
+
+        /* Мижоз маълумотлари блоки */
+        .client-info-box {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+        .client-input {
+            flex: 1;
+            padding: 10px 12px;
+            border: none;
+            border-radius: 6px;
+            font-size: 14px;
+            outline: none;
         }
 
-        /* Мобил вариант учун */
+        /* Жадвал ва инпутлар стили */
+        .order-table-container {
+            background: rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(10px);
+            padding: 20px;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            max-width: 100%;
+            overflow-x: auto;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+        }
+
+        .order-table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+        }
+
+        .order-table th, .order-table td {
+            padding: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .order-table th {
+            background: rgba(0, 0, 0, 0.4);
+            font-size: 14px;
+            text-align: center;
+        }
+
+        .table-input, .table-select {
+            width: 100%;
+            padding: 8px;
+            border: none;
+            border-radius: 6px;
+            font-size: 14px;
+            outline: none;
+            background: white;
+            color: #333;
+            box-sizing: border-box;
+        }
+
+        /* Тугмалар дизайни */
+        .action-buttons {
+            display: flex;
+            gap: 5px;
+            justify-content: center;
+        }
+        .row-edit-btn {
+            background: #2980b9;
+            color: white;
+            border: none;
+            padding: 6px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: bold;
+        }
+        .row-edit-btn:hover { background: #1f618d; }
+
+        .row-delete-btn {
+            background: #e74c3c;
+            color: white;
+            border: none;
+            padding: 6px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: bold;
+        }
+        .row-delete-btn:hover { background: #c0392b; }
+
+        .table-actions {
+            margin-top: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .add-row-btn {
+            background: #2980b9;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        .add-row-btn:hover { background: #1f618d; }
+
+        .submit-order-btn {
+            background: #f39c12;
+            color: white;
+            border: none;
+            padding: 10px 25px;
+            border-radius: 6px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        }
+        .submit-order-btn:hover { background: #d35400; }
+
+        .footer-line {
+            margin-top: 20px;
+            padding-top: 15px; font-size: 16px; font-weight: 300; border-top: 1px solid rgba(255,255,255,0.3);
+        }
+
         @media (max-width: 768px) {
             .hero-container { flex-direction: column; }
             .right-side { padding: 20px; }
-            .top-nav { justify-content: center; margin-bottom: 20px; }
-            h1 { font-size: 35px; }
+            h1 { font-size: 22px; }
             .orange-badge { width: 100px; font-size: 12px; left: 10px; padding: 15px 10px; }
-            p { font-size: 16px; }
+            .client-info-box { flex-direction: column; gap: 10px; }
         }
     </style>
 </head>
@@ -80,15 +188,93 @@
 
         <div class="right-side">
             <div class="top-nav">
-                <a href="#" class="nav-btn">ЯНГИ МАҲСУЛОТЛАР</a>
+                <a href="#" class="nav-btn">МАҲСУЛОТЛАР БУЮРТМАСИ</a>
                 <a class='nav-btn' href='/'>АСОСИЙ САҲИФА</a>
                 <a class='nav-btn' href='/login.html' style='background: #f39c12; border: none;'>ШАХСИЙ КАБИНЕТ</a>
                 <span class="logo-text">Qulay market-777 🟢</span>
             </div>
             
-            <div class="content-area">
-                <h1>ХУШ КЕЛИБСИЗ <br> QULAY MARKET </h1>
-                <p>Энг сара маҳсулотлар, сифатли хизмат ва ҳамёнбоп нархлар фақат бизда. Ҳар куни янги ва сархил неъматлар билан сизнинг хизматингиздамиз.</p>
+            <div>
+                <h1>МАҲСУЛОТЛАР БУЮРТМА ЖАДВАЛИ</h1>
+                
+                <div class="order-table-container">
+                    <form id="orderForm" onsubmit="sendOrderToTelegram(event)">
+                        
+                        <!-- Буюртмачи маълумотлари -->
+                        <div class="client-info-box">
+                            <input type="text" id="clientName" class="client-input" placeholder="Исми шарифингиз (масалан: Ахадхон)" required>
+                            <input type="text" id="clientPhone" class="client-input" placeholder="Телефон рақами (масалан: +998952201542)" required>
+                        </div>
+
+                        <!-- Маҳсулотлар жадвали -->
+                        <table class="order-table" id="dynamicTable">
+                            <thead>
+                                <tr>
+                                    <th style="width: 30%;">Миқдори (кг, гр, дона)</th>
+                                    <th style="width: 50%;">Маҳсулот номи</th>
+                                    <th style="width: 20%;">Амал</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <select class="table-select" disabled>
+                                            <option value="2кг">2кг</option>
+                                            <option value="1кг">1кг</option>
+                                            <option value="5кг">5кг</option>
+                                            <option value="500гр">500гр</option>
+                                            <option value="1дона">1дона</option>
+                                        </select>
+                                    </td>
+                                    <td><input type="text" class="table-input" value="Картошка" readonly required></td>
+                                    <td style="text-align: center;">
+                                        <div class="action-buttons">
+                                            <button type="button" class="row-edit-btn" onclick="toggleEdit(this)">Таҳрир</button>
+                                            <button type="button" class="row-delete-btn" onclick="removeRow(this)">Ўчириш</button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <select class="table-select" disabled>
+                                            <option value="1кг">1кг</option>
+                                            <option value="2кг">2кг</option>
+                                            <option value="5кг">5кг</option>
+                                        </select>
+                                    </td>
+                                    <td><input type="text" class="table-input" value="Сабзи" readonly required></td>
+                                    <td style="text-align: center;">
+                                        <div class="action-buttons">
+                                            <button type="button" class="row-edit-btn" onclick="toggleEdit(this)">Таҳрир</button>
+                                            <button type="button" class="row-delete-btn" onclick="removeRow(this)">Ўчириш</button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <select class="table-select" disabled>
+                                            <option value="5кг">5кг</option>
+                                            <option value="1кг">1кг</option>
+                                            <option value="2кг">2кг</option>
+                                        </select>
+                                    </td>
+                                    <td><input type="text" class="table-input" value="пиез" readonly required></td>
+                                    <td style="text-align: center;">
+                                        <div class="action-buttons">
+                                            <button type="button" class="row-edit-btn" onclick="toggleEdit(this)">Таҳрир</button>
+                                            <button type="button" class="row-delete-btn" onclick="removeRow(this)">Ўчириш</button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <div class="table-actions">
+                            <button type="button" class="add-row-btn" onclick="addRow()">+ Қатор қўшиш</button>
+                            <button type="submit" class="submit-order-btn">🛒 БУЮРТМАНИ ЮБОРИШ</button>
+                        </div>
+                    </form>
+                </div>
             </div>
 
             <div class="footer-line">
@@ -96,6 +282,120 @@
             </div>
         </div>
     </div>
+
+<script>
+    // Жадвалга янги қатор қўшиш (очиқ ҳолатда қўшилади, дарҳол ёзиш мумкин)
+    function addRow() {
+        const tableBody = document.querySelector('#dynamicTable tbody');
+        const newRow = document.createElement('tr');
+        
+        newRow.innerHTML = `
+            <td>
+                <select class="table-select">
+                    <option value="1кг">1кг</option>
+                    <option value="2кг">2кг</option>
+                    <option value="5кг">5кг</option>
+                    <option value="500гр">500гр</option>
+                    <option value="1дона">1дона</option>
+                </select>
+            </td>
+            <td><input type="text" class="table-input" placeholder="Маҳсулот номи..." required></td>
+            <td style="text-align: center;">
+                <div class="action-buttons">
+                    <button type="button" class="row-edit-btn" onclick="toggleEdit(this)">Сақлаш</button>
+                    <button type="button" class="row-delete-btn" onclick="removeRow(this)">Ўчириш</button>
+                </div>
+            </td>
+        `;
+        tableBody.appendChild(newRow);
+    }
+
+    // Қаторни таҳрирлаш ва сақлаш функцияси
+    function toggleEdit(button) {
+        const row = button.closest('tr');
+        const select = row.querySelector('.table-select');
+        const input = row.querySelector('.table-input');
+
+        if (select.disabled) {
+            // Таҳрирлаш режимини ёқиш
+            select.disabled = false;
+            input.removeAttribute('readonly');
+            input.focus();
+            button.textContent = "Сақлаш";
+            button.style.background = "#27ae60";
+        } else {
+            // Ўзгаришларни сақлаш (қулфлаш)
+            select.disabled = true;
+            input.setAttribute('readonly', true);
+            button.textContent = "Таҳрир";
+            button.style.background = "#2980b9";
+        }
+    }
+
+    // Қаторни ўчириш функцияси
+    function removeRow(button) {
+        const row = button.closest('tr');
+        const tbody = row.closest('tbody');
+        if (tbody.children.length > 1) {
+            row.remove();
+        } else {
+            alert("Камида битта маҳсулот қатори қолиши керак!");
+        }
+    }
+
+    // Telegram ботга юбориш функцияси
+ // Telegram ботга юбориш функцияси
+ // Telegram ботга юбориш функцияси
+    function sendOrderToTelegram(event) {
+        event.preventDefault();
+        
+        const clientName = document.getElementById('clientName').value;
+        const clientPhone = document.getElementById('clientPhone').value;
+        const rows = document.querySelectorAll('#dynamicTable tbody tr');
+        
+        let orderDetails = `📦 ЯНГИ БУЮРТМА:\n\n👤 Исм: ${clientName}\n📞 Тел: ${clientPhone}\n\n🛒 Маҳсулотлар:\n`;
+
+        rows.forEach((row, index) => {
+            const qty = row.cells[0].querySelector('select').value;
+            const product = row.cells[1].querySelector('input').value;
+
+            orderDetails += `${index + 1}. ${product} - ${qty}\n`;
+        });
+
+        // Бот токени ва гуруҳ ID рақами
+        const token = "8834602502:AAHNGHOnTt4-VxSAoDQdqU4JxICtr250UaY";
+        const chatId = "-5338808425"; // Гуруҳ ID рақами
+        
+        const url = `https://api.telegram.org/bot${token}/sendMessage`;
+        
+        const data = {
+            chat_id: chatId,
+            text: orderDetails
+        };
+
+        // Telegram серверiga хабар юбориш
+        fetch(url, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        })
+        .then(response => response.json())
+        .then(result => {
+            if (result.ok) {
+                alert("Буюртмангиз муваффақиятли Telegram гуруҳга юборилди!");
+                document.getElementById('orderForm').reset();
+            } else {
+                alert("Хатолик юз берди. Бот гуруҳда админ эканлигини текширинг.");
+            }
+        })
+        .catch(error => {
+            console.error('Хато:', error);
+            alert("Интернет тармоғида хатолик юз берди.");
+        });
+    }
+</script>
 
 <script src="//taplink.cc/id:14803624/widget/" async></script>
 </body>
