@@ -34,12 +34,12 @@
 
         .top-nav {
             padding-bottom: 20px;
-            display: flex; gap: 15px; align-items: center; flex-wrap: wrap;
+            display: flex; gap: 10px; align-items: center; flex-wrap: wrap;
         }
         .nav-btn {
             background: rgba(255,255,255,0.2); color: white; border: 1px solid white;
-            padding: 8px 18px; border-radius: 25px; cursor: pointer;
-            text-decoration: none; font-size: 14px; font-weight: bold; transition: 0.3s;
+            padding: 8px 14px; border-radius: 25px; cursor: pointer;
+            text-decoration: none; font-size: 13px; font-weight: bold; transition: 0.3s;
         }
         .nav-btn:hover { background: white; color: #27ae60; }
         .logo-text { font-size: 18px; font-weight: bold; margin-left: auto; }
@@ -174,6 +174,8 @@
             h1 { font-size: 22px; }
             .orange-badge { width: 100px; font-size: 12px; left: 10px; padding: 15px 10px; }
             .client-info-box { flex-direction: column; gap: 10px; }
+            .top-nav { justify-content: center; }
+            .logo-text { margin-left: 0; width: 100%; text-align: center; margin-top: 5px; }
         }
     </style>
 </head>
@@ -189,8 +191,9 @@
         <div class="right-side">
             <div class="top-nav">
                 <a href="#" class="nav-btn">МАҲСУЛОТЛАР БУЮРТМАСИ</a>
-                <a class='nav-btn' href='/'>АСОСИЙ САҲИФА</a>
-                <a class='nav-btn' href='/login.html' style='background: #f39c12; border: none;'>ШАХСИЙ КАБИНЕТ</a>
+                <a class="nav-btn" href="/">АСОСИЙ САҲИФА</a>
+                <a class="nav-btn" href="/login.html" style="background: #f39c12; border: none;">ШАХСИЙ КАБИНЕТ</a>
+                <a class="nav-btn" href="/qulaymarket-777.apk" style="background: #e67e22; border: none;">МОБИЛ ИЛОВА</a>
                 <span class="logo-text">Qulay market-777 🟢</span>
             </div>
             
@@ -284,7 +287,7 @@
     </div>
 
 <script>
-    // Жадвалга янги қатор қўшиш (очиқ ҳолатда қўшилади, дарҳол ёзиш мумкин)
+    // Жадвалга янги қатор қўшиш
     function addRow() {
         const tableBody = document.querySelector('#dynamicTable tbody');
         const newRow = document.createElement('tr');
@@ -317,14 +320,12 @@
         const input = row.querySelector('.table-input');
 
         if (select.disabled) {
-            // Таҳрирлаш режимини ёқиш
             select.disabled = false;
             input.removeAttribute('readonly');
             input.focus();
             button.textContent = "Сақлаш";
             button.style.background = "#27ae60";
         } else {
-            // Ўзгаришларни сақлаш (қулфлаш)
             select.disabled = true;
             input.setAttribute('readonly', true);
             button.textContent = "Таҳрир";
@@ -344,8 +345,6 @@
     }
 
     // Telegram ботга юбориш функцияси
- // Telegram ботга юбориш функцияси
- // Telegram ботга юбориш функцияси
     function sendOrderToTelegram(event) {
         event.preventDefault();
         
@@ -362,9 +361,8 @@
             orderDetails += `${index + 1}. ${product} - ${qty}\n`;
         });
 
-        // Бот токени ва гуруҳ ID рақами
         const token = "8834602502:AAHNGHOnTt4-VxSAoDQdqU4JxICtr250UaY";
-        const chatId = "-5338808425"; // Гуруҳ ID рақами
+        const chatId = "-5338808425";
         
         const url = `https://api.telegram.org/bot${token}/sendMessage`;
         
@@ -373,7 +371,6 @@
             text: orderDetails
         };
 
-        // Telegram серверiga хабар юбориш
         fetch(url, {
             method: 'POST',
             headers: {
