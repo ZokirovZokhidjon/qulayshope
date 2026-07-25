@@ -44,7 +44,6 @@
 
         h1 { font-size: 28px; margin: 0 0 15px 0; text-transform: uppercase; }
 
-        /* Мижоз маълумотлари блоки */
         .client-info-box {
             display: flex;
             gap: 15px;
@@ -59,7 +58,6 @@
             outline: none;
         }
 
-        /* Жадвал ва инпутлар стили */
         .order-table-container {
             background: rgba(0, 0, 0, 0.3);
             backdrop-filter: blur(10px);
@@ -88,7 +86,7 @@
             text-align: center;
         }
 
-        .table-input, .table-select {
+        .table-input {
             width: 100%;
             padding: 8px;
             border: none;
@@ -100,29 +98,16 @@
             box-sizing: border-box;
         }
 
-        /* Тугмалар дизайни */
         .action-buttons {
             display: flex;
-            gap: 5px;
             justify-content: center;
         }
-        .row-edit-btn {
-            background: #2980b9;
-            color: white;
-            border: none;
-            padding: 6px 10px;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 12px;
-            font-weight: bold;
-        }
-        .row-edit-btn:hover { background: #1f618d; }
 
         .row-delete-btn {
             background: #e74c3c;
             color: white;
             border: none;
-            padding: 6px 10px;
+            padding: 6px 12px;
             border-radius: 4px;
             cursor: pointer;
             font-size: 12px;
@@ -161,7 +146,6 @@
         }
         .submit-order-btn:hover { background: #d35400; }
 
-        /* Мобил илова карточкаси ва инструкция стили */
         .app-card-section {
             margin-top: 25px;
             background: rgba(0, 0, 0, 0.3);
@@ -199,9 +183,7 @@
             box-shadow: 0 4px 10px rgba(0,0,0,0.2);
             display: inline-block;
         }
-        .app-download-btn:hover {
-            background: #d35400;
-        }
+        .app-download-btn:hover { background: #d35400; }
 
         .instruction-cards {
             display: flex;
@@ -270,13 +252,11 @@
                 <div class="order-table-container">
                     <form id="orderForm" onsubmit="sendOrderToTelegram(event)">
                         
-                        <!-- Буюртмачи маълумотлари -->
                         <div class="client-info-box">
                             <input type="text" id="clientName" class="client-input" placeholder="Исми шарифингиз (масалан: Ахадхон)" required>
                             <input type="text" id="clientPhone" class="client-input" placeholder="Телефон рақами (масалан: +998952201542)" required>
                         </div>
 
-                        <!-- Маҳсулотлар жадвали -->
                         <table class="order-table" id="dynamicTable">
                             <thead>
                                 <tr>
@@ -287,51 +267,28 @@
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td>
-                                        <select class="table-select" disabled>
-                                            <option value="2кг">2кг</option>
-                                            <option value="1кг">1кг</option>
-                                            <option value="5кг">5кг</option>
-                                            <option value="500гр">500гр</option>
-                                            <option value="1дона">1дона</option>
-                                        </select>
-                                    </td>
-                                    <td><input type="text" class="table-input" value="Картошка" readonly required></td>
+                                    <td><input type="text" class="table-input" value="2кг" required></td>
+                                    <td><input type="text" class="table-input" value="Картошка" required></td>
                                     <td style="text-align: center;">
                                         <div class="action-buttons">
-                                            <button type="button" class="row-edit-btn" onclick="toggleEdit(this)">Таҳрир</button>
                                             <button type="button" class="row-delete-btn" onclick="removeRow(this)">Ўчириш</button>
                                         </div>
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td>
-                                        <select class="table-select" disabled>
-                                            <option value="1кг">1кг</option>
-                                            <option value="2кг">2кг</option>
-                                            <option value="5кг">5кг</option>
-                                        </select>
-                                    </td>
-                                    <td><input type="text" class="table-input" value="Сабзи" readonly required></td>
+                                    <td><input type="text" class="table-input" value="1кг" required></td>
+                                    <td><input type="text" class="table-input" value="Сабзи" required></td>
                                     <td style="text-align: center;">
                                         <div class="action-buttons">
-                                            <button type="button" class="row-edit-btn" onclick="toggleEdit(this)">Таҳрир</button>
                                             <button type="button" class="row-delete-btn" onclick="removeRow(this)">Ўчириш</button>
                                         </div>
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td>
-                                        <select class="table-select" disabled>
-                                            <option value="5кг">5кг</option>
-                                            <option value="1кг">1кг</option>
-                                            <option value="2кг">2кг</option>
-                                        </select>
-                                    </td>
-                                    <td><input type="text" class="table-input" value="пиез" readonly required></td>
+                                    <td><input type="text" class="table-input" value="5кг" required></td>
+                                    <td><input type="text" class="table-input" value="Пиёз" required></td>
                                     <td style="text-align: center;">
                                         <div class="action-buttons">
-                                            <button type="button" class="row-edit-btn" onclick="toggleEdit(this)">Таҳрир</button>
                                             <button type="button" class="row-delete-btn" onclick="removeRow(this)">Ўчириш</button>
                                         </div>
                                     </td>
@@ -341,34 +298,26 @@
 
                         <div class="table-actions">
                             <button type="button" class="add-row-btn" onclick="addRow()">+ Қатор қўшиш</button>
-                            <button type="submit" class="submit-order-btn">🛒 БУЮРТМАНИ ЮБОРИШ</button>
+                            <button type="submit" class="submit-order-btn">🛒 БУЮРТМАТНИ ЮБОРИШ</button>
                         </div>
                     </form>
                 </div>
 
-                <!-- Мобил илова карточкаси ва ўрнатиш кўрсатмаси -->
                 <div class="app-card-section">
                     <div class="app-card-header">
                         <span class="app-card-title">📱 Мобил иловани юклаб олиш ва ўрнатиш</span>
                         <a href="/qulaymarket-777.apk" class="app-download-btn">📲 Мобил иловани юклаб олиш</a>
-
                     </div>
                     <div class="instruction-cards">
                         <div class="instruction-card">
                             <span class="step-number">1-Қадам</span>
-                            <p style="margin-top: 8px; margin-bottom: 0; font-family: sans-serif; font-size: 16px;">Чиққан ойнада «Я согласен / Розиман»</b> деган жойга галочка қўйинг.</p>
+                            <p style="margin-top: 8px; margin-bottom: 0; font-family: sans-serif; font-size: 16px;">Чиққан ойнада «Я согласен / Розиман» деган жойга галочка қўйинг.</p>
                         </div>
                         <div class="instruction-card">
                             <span class="step-number">2-Қадам</span>
-                            <p style="margin-top: 8px; margin-bottom: 0;font-family: sans-serif; font-size: 16px;">«Подробней / Батафсил»</b> тугмасини босиб, сўнгра  «Всё равно установить / Барибир ўрнатиш»</b> тугмасини босиб иловани ўрнатинг.</p>
+                            <p style="margin-top: 8px; margin-bottom: 0;font-family: sans-serif; font-size: 16px;">«Подробней / Батафсил» тугмасини босиб, сўнгра «Всё равно установить / Барибир ўрнатиш» тугмасини босиб иловани ўрнатинг.</p>
                         </div>
                     </div>
-                    <div class="instruction-card2">
-                            <span class="step-number">3-Қадам</span>
-                            <p style="margin-top: 8px; margin-bottom: 0;font-family: sans-serif; font-size: 16px;"> ДИҚҚАТ АГАР СИЗ УЙИНГИЗГА  МАХСУЛОТ ЕТКАЗИШ ЁКИ МУРОЖААТ,ТАКЛИФЛАРИНГИЗ БУЛСА "БУЮРТМА" ТУГМАСИНИ БОСИНГ. УШБУ РАСМДАГИ СТРЕЛКАГА ҚАРАНГ ШУ ЕРНИ БОСИНГ  </p>
-                                👇👇👇👇👇<br>
-                                <img src="007.jpg" alt="sos" width="200" height=" 50">
-                        </div>
                 </div>
 
             </div>
@@ -380,25 +329,15 @@
     </div>
 
     <script>
-        // Жадвалга янги қатор қўшиш
         function addRow() {
             const tableBody = document.querySelector('#dynamicTable tbody');
             const newRow = document.createElement('tr');
             
             newRow.innerHTML = `
-                <td>
-                    <select class="table-select">
-                        <option value="1кг">1кг</option>
-                        <option value="2кг">2кг</option>
-                        <option value="5кг">5кг</option>
-                        <option value="500гр">500гр</option>
-                        <option value="1дона">1дона</option>
-                    </select>
-                </td>
+                <td><input type="text" class="table-input" placeholder="Масалан: 1.5кг, 300гр..." required></td>
                 <td><input type="text" class="table-input" placeholder="Маҳсулот номи..." required></td>
                 <td style="text-align: center;">
                     <div class="action-buttons">
-                        <button type="button" class="row-edit-btn" onclick="toggleEdit(this)">Сақлаш</button>
                         <button type="button" class="row-delete-btn" onclick="removeRow(this)">Ўчириш</button>
                     </div>
                 </td>
@@ -406,27 +345,6 @@
             tableBody.appendChild(newRow);
         }
 
-        // Қаторни таҳрирлаш ва сақлаш функцияси
-        function toggleEdit(button) {
-            const row = button.closest('tr');
-            const select = row.querySelector('.table-select');
-            const input = row.querySelector('.table-input');
-
-            if (select.disabled) {
-                select.disabled = false;
-                input.removeAttribute('readonly');
-                input.focus();
-                button.textContent = "Сақлаш";
-                button.style.background = "#27ae60";
-            } else {
-                select.disabled = true;
-                input.setAttribute('readonly', true);
-                button.textContent = "Таҳрир";
-                button.style.background = "#2980b9";
-            }
-        }
-
-        // Қаторни ўчириш функцияси
         function removeRow(button) {
             const row = button.closest('tr');
             const tbody = row.closest('tbody');
@@ -437,7 +355,6 @@
             }
         }
 
-        // Telegram ботга юбориш функцияси
         function sendOrderToTelegram(event) {
             event.preventDefault();
             
@@ -448,15 +365,15 @@
             let orderDetails = `📦 ЯНГИ БУЮРТМА:\n\n👤 Исм: ${clientName}\n📞 Тел: ${clientPhone}\n\n🛒 Маҳсулотлар:\n`;
 
             rows.forEach((row, index) => {
-                const qty = row.cells[0].querySelector('select').value;
-                const product = row.cells[1].querySelector('input').value;
+                const inputs = row.querySelectorAll('.table-input');
+                const qty = inputs[0].value;
+                const product = inputs[1].value;
 
                 orderDetails += `${index + 1}. ${product} - ${qty}\n`;
             });
 
             const token = "8834602502:AAHNGHOnTt4-VxSAoDQdqU4JxICtr250UaY";
             const chatId = "-5338808425";
-            
             const url = `https://api.telegram.org/bot${token}/sendMessage`;
             
             const data = {
@@ -486,7 +403,5 @@
             });
         }
     </script>
-
-    <script src="//taplink.cc/id:14803624/widget/" async></script>
 </body>
 </html>
