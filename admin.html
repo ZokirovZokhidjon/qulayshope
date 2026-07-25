@@ -56,7 +56,9 @@
         <thead><tr id="t-head"></tr></thead>
         <tbody id="t-body"></tbody>
     </table>
-</div><script>
+</div>
+
+<script>
     const firebaseConfig = { apiKey: "AIzaSyAt5qPDDjM8o1sFw9zJ2PCA8Md1Su2zybs", databaseURL: "https://qulaybozor-16d03-default-rtdb.firebaseio.com", projectId: "qulaybozor-16d03" };
     if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
     const db = firebase.database();
@@ -73,10 +75,10 @@
     function updateInputPanel() {
         const panel = document.getElementById('input-container');
         if (currentTab === 'debts') {
-            // Telegram ID инпути олиб ташланди, энди админ умуман қийналмайди
             panel.innerHTML = `
                 <input type="text" id="in-name" placeholder="Карздорнинг исми шарифи">
                 <input type="text" id="in-phone" placeholder="Телефон рақами (+998...)">
+                <input type="text" id="in-chatid" placeholder="Telegram ID рақами">
                 <input type="text" id="in-items" placeholder="Қайси куни насияга канака товар олди">
                 <input type="text" id="in-date" placeholder="Санаси (Куни, ойи, йили)">
                 <input type="number" id="in-amount" placeholder="Қарз суммаси">
@@ -161,6 +163,7 @@
         if (currentTab === 'debts') {
             const name = document.getElementById('in-name').value;
             const phone = document.getElementById('in-phone').value;
+            const chatid = document.getElementById('in-chatid').value;
             const items = document.getElementById('in-items').value;
             const date = document.getElementById('in-date').value;
             const amount = Number(document.getElementById('in-amount').value);
@@ -168,8 +171,7 @@
 
             if(!name || !amount) return alert("Исм ва қарз суммасини тўлдиринг!");
 
-            // Chat ID майдони олиб ташлангани учун базага фақат керакли маълумотлар кетади
-            db.ref('debts/' + type).push({ name, phone, items, date, amount, chatid: "" });
+            db.ref('debts/' + type).push({ name, phone, chatid, items, date, amount });
         } else {
             const name = document.getElementById('in-name').value;
             const desc = document.getElementById('in-desc').value;
@@ -190,28 +192,24 @@
 
     function sendTelegramToPrivate(chatId, name, amount) {
         if (!chatId || chatId === "" || chatId === "undefined") {
-            alert("Қарздорнинг Telegram ID рақами базада мавжуд эмас! Аввал мижоз бот орқали рўйхатдан ўтиши керак.");
+            alert("Қарздорнинг Telegram ID рақами базада мавжуд эмас!");
             return;
         }
 
         const token = '8613406633:AAEWDnNS0hPj1pKELLw5-G44friQxCswIVE';
-        const message = `Ҳурматли ${name}, Сизнинг дўконимизда ${Number(amount).toLocaleString()} сўм қарздорлигингиз мавжуд. Тўлов қилишингизни сўраймиз. Qulay Bozor.`;
-        
+        const message = `Ҳурматли ${name}, Сизнинг дўконимизда ${Number(amount).toLocaleString()} сўм қарздорлигингиз мавжуд.`;
         const url = `https://api.telegram.org/bot${token}/sendMessage?chat_id=${chatId}&text=${encodeURIComponent(message)}`;
 
         fetch(url)
             .then(response => response.json())
             .then(data => {
                 if (data.ok) {
-                    alert("Хабар қарздорнинг Telegram личкасига муваффақиятли юборилди!");
+                    alert("Хабар юборилди!");
                 } else {
-                    alert("Хатолик юз берди: " + data.description);
+                    alert("Хатолик: " + data.description);
                 }
             })
-            .catch(error => {
-                console.error('Хато:', error);
-                alert("Тармоқ билан боғлиқ хатолик юз берди.");
-            });
+            .catch(error => alert("Тармоқ хатолиги."));
     }
 
     function updateStats() {
