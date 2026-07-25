@@ -1,4 +1,4 @@
- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="uz">
 <head>
     <meta charset="UTF-8">
@@ -18,12 +18,12 @@
         .nav-tabs button { padding: 10px 15px; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; background: #ddd; white-space: nowrap; }
         .nav-tabs button.active { background: var(--blue); color: white; }
         
-        /* Жадвал учун тўғриланган стиль */
         .table-container { background: white; padding: 15px; margin: 15px; border-radius: 12px; overflow-x: auto; }
         table { width: 100%; border-collapse: collapse; min-width: 500px; }
         th, td { padding: 12px; border-bottom: 1px solid #eee; text-align: left; }
         .btn-act { padding: 5px 10px; border: none; border-radius: 4px; cursor: pointer; background: var(--red); color: white; }
-
+        .btn-sms { padding: 5px 10px; border: none; border-radius: 4px; cursor: pointer; background: var(--blue); color: white; margin-right: 5px; }
+        
         @media (max-width: 600px) {
             .input-panel { flex-direction: column; }
         }
@@ -36,41 +36,65 @@
     <a href="index.html" style="color: gold; text-decoration: none;">ЧИҚИШ</a>
 </header>
 
-<div class="stat-grid">
-    <div class="stat-card"><h3>ЖАМИ САВДО</h3><p id="stat-sales">0 сум</p></div>
+<div class="stat-grid" style="grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));">
     <div class="stat-card"><h3>МИЖОЗ ҚАРЗИ</h3><p id="stat-client-debts">0 сум</p></div>
-    <div class="stat-card"><h3>ДЎКОН ҚАРЗИ</h3><p id="stat-shop-debts">0 сум</p></div>
+    <div class="stat-card" style="border-left-color: var(--blue);"><h3>ДЎКОН ҚАРЗИ</h3><p id="stat-shop-debts">0 сум</p></div>
 </div>
 
 <div class="nav-tabs">
-    <button id="btn-sales" class="active" onclick="switchTab('sales')">САВДО</button>
-    <button id="btn-debts" onclick="switchTab('debts')">ҚАРЗЛАР</button>
-    <button id="btn-stock" onclick="switchTab('stock')">ОМБОР</button>
+    <button id="btn-debts" class="active" onclick="switchTab('debts')">ҚАРЗДОРЛАР</button>
     <button id="btn-expenses" onclick="switchTab('expenses')">ХАРАЖАТЛАР</button>
 </div>
 
-<div class="input-panel">
-    <input type="text" id="in-name" placeholder="Номи / Исм">
-    <input type="text" id="in-desc" placeholder="Изоҳ (mijoz/dukon)">
-    <input type="number" id="in-amount" placeholder="Сумма">
-    <button onclick="saveData()" style="background:var(--green); color:white; border:none; padding:8px 15px; border-radius:6px; cursor:pointer;">Сақлаш</button>
+<!-- Қарздорлар ёки Харажатлар учун динамик инпутлар панели -->
+<div class="input-panel" id="input-container">
+    <!-- Жорий актив вкладкага қараб ўзгаради -->
 </div>
 
 <div class="table-container">
-    <table><thead><tr id="t-head"><th>НОМИ</th><th>ИЗОҲ</th><th>СУММА</th><th>АМАЛ</th></tr></thead><tbody id="t-body"></tbody></table>
+    <table>
+        <thead><tr id="t-head"></tr></thead>
+        <tbody id="t-body"></tbody>
+    </table>
 </div>
 
 <script>
     const firebaseConfig = { apiKey: "AIzaSyAt5qPDDjM8o1sFw9zJ2PCA8Md1Su2zybs", databaseURL: "https://qulaybozor-16d03-default-rtdb.firebaseio.com", projectId: "qulaybozor-16d03" };
     if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
     const db = firebase.database();
-    let currentTab = 'sales';
+    let currentTab = 'debts';
 
     function switchTab(tab) {
         currentTab = tab;
         document.querySelectorAll('.nav-tabs button').forEach(b => b.classList.remove('active'));
         document.getElementById('btn-' + tab).classList.add('active');
+        updateInputPanel();
         render(); 
+    }
+
+    function updateInputPanel() {
+        const panel = document.getElementById('input-container');
+        if (currentTab === 'debts') {
+            panel.innerHTML = `
+                <input type="text" id="in-name" placeholder="Қарздорнинг исми шарифи">
+                <input type="text" id="in-phone" placeholder="Телефон рақами (+998...)">
+                <input type="text" id="in-items" placeholder="Насияга олган товарлар номи, суммаси">
+                <input type="text" id="in-date" placeholder="Санаси (Куни, ойи, йили)">
+                <input type="number" id="in-amount" placeholder="Қарз суммаси">
+                <select id="in-type" style="padding: 8px; border: 1px solid #ccc; border-radius: 6px; flex: 1; min-width: 150px;">
+                    <option value="mijoz">Мижоз</option>
+                    <option value="dukon">Дўкон</option>
+                </select>
+                <button onclick="saveData()" style="background:var(--green); color:white; border:none; padding:8px 15px; border-radius:6px; cursor:pointer; width:100%;">Қарзни сақлаш</button>
+            `;
+        } else {
+            panel.innerHTML = `
+                <input type="text" id="in-name" placeholder="Харажат номи">
+                <input type="text" id="in-desc" placeholder="Изоҳ">
+                <input type="number" id="in-amount" placeholder="Сумма">
+                <button onclick="saveData()" style="background:var(--green); color:white; border:none; padding:8px 15px; border-radius:6px; cursor:pointer; width:100%;">Сақлаш</button>
+            `;
+        }
     }
 
     function render() {
@@ -79,57 +103,82 @@
         const h = document.getElementById('t-head');
         b.innerHTML = ""; 
 
-        if (currentTab === 'sales') {
-            h.innerHTML = "<th>Вақт</th><th>Кассир</th><th>Смена</th><th>Сумма</th><th>Амал</th>";
-            db.ref('sales').on('value', snap => {
-                b.innerHTML = "";
-                const data = snap.val();
-                if (data) Object.entries(data).forEach(([id, v]) => {
-                    b.innerHTML += `<tr><td>${v.date || '---'}</td><td>${v.cashier || '---'}</td><td>${v.shift || '---'}</td><td>${Number(v.price || 0).toLocaleString()}</td><td><button class="btn-act" onclick="deleteItem('${id}')">Ўчириш</button></td></tr>`;
-                });
-            });
-        } else if (currentTab === 'debts') {
-            h.innerHTML = "<th>Исм</th><th>Тури</th><th>Сумма</th><th>Амал</th>";
+        if (currentTab === 'debts') {
+            h.innerHTML = "<th>Исм</th><th>Телефон</th><th>Товарлар ва суммаси</th><th>Сана</th><th>Қарз суммаси</th><th>Тури</th><th>Амал</th>";
             db.ref('debts').on('value', snap => {
                 b.innerHTML = "";
                 const data = snap.val();
-                if (data?.mijoz) Object.entries(data.mijoz).forEach(([id, v]) => b.innerHTML += `<tr><td>${v.name}</td><td>Мижоз</td><td>${Number(v.amount).toLocaleString()}</td><td><button class="btn-act" onclick="deleteItem('${id}', 'mijoz')">Ўчириш</button></td></tr>`);
-                if (data?.dukon) Object.entries(data.dukon).forEach(([id, v]) => b.innerHTML += `<tr><td>${v.name}</td><td>Дўкон</td><td>${Number(v.amount).toLocaleString()}</td><td><button class="btn-act" onclick="deleteItem('${id}', 'dukon')">Ўчириш</button></td></tr>`);
-            });
-        } else if (currentTab === 'stock') {
-            h.innerHTML = "<th>Номи</th><th>Миқдори</th><th>Нархи</th><th>Амал</th>";
-            db.ref('stock').on('value', snap => {
-                b.innerHTML = "";
-                const data = snap.val();
-                if (data) Object.entries(data).forEach(([id, v]) => {
-                    b.innerHTML += `<tr><td>${v.name || '---'}</td><td>${v.qty || '---'}</td><td>${Number(v.price || 0).toLocaleString()}</td><td><button class="btn-act" onclick="deleteItem('${id}')">Ўчириш</button></td></tr>`;
-                });
+                if (data?.mijoz) {
+                    Object.entries(data.mijoz).forEach(([id, v]) => {
+                        b.innerHTML += `<tr>
+                            <td>${v.name || ''}</td>
+                            <td>${v.phone || ''}</td>
+                            <td>${v.items || ''}</td>
+                            <td>${v.date || ''}</td>
+                            <td>${Number(v.amount || 0).toLocaleString()} сум</td>
+                            <td>Мижоз</td>
+                            <td>
+                                <button class="btn-sms" onclick="sendOperatorStyleSMS('${v.phone}', '${v.name}', '${v.items}', '${v.amount}')">SMS</button>
+                                <button class="btn-act" onclick="deleteItem('${id}', 'mijoz')">Ўчириш</button>
+                            </td>
+                        </tr>`;
+                    });
+                }
+                if (data?.dukon) {
+                    Object.entries(data.dukon).forEach(([id, v]) => {
+                        b.innerHTML += `<tr>
+                            <td>${v.name || ''}</td>
+                            <td>${v.phone || ''}</td>
+                            <td>${v.items || ''}</td>
+                            <td>${v.date || ''}</td>
+                            <td>${Number(v.amount || 0).toLocaleString()} сум</td>
+                            <td>Дўкон</td>
+                            <td>
+                                <button class="btn-sms" onclick="sendOperatorStyleSMS('${v.phone}', '${v.name}', '${v.items}', '${v.amount}')">SMS</button>
+                                <button class="btn-act" onclick="deleteItem('${id}', 'dukon')">Ўчириш</button>
+                            </td>
+                        </tr>`;
+                    });
+                }
             });
         } else {
             h.innerHTML = "<th>НОМИ</th><th>ИЗОҲ</th><th>СУММА</th><th>АМАЛ</th>";
             db.ref('expenses').on('value', snap => {
                 b.innerHTML = "";
                 const data = snap.val();
-                if (data) Object.entries(data).forEach(([id, x]) => b.innerHTML += `<tr><td>${x.name || '---'}</td><td>${x.desc || '---'}</td><td>${Number(x.amount || 0).toLocaleString()}</td><td><button class="btn-act" onclick="deleteItem('${id}')">Ўчириш</button></td></tr>`);
+                if (data) Object.entries(data).forEach(([id, x]) => {
+                    b.innerHTML += `<tr>
+                        <td>${x.name || '---'}</td>
+                        <td>${x.desc || '---'}</td>
+                        <td>${Number(x.amount || 0).toLocaleString()} сум</td>
+                        <td><button class="btn-act" onclick="deleteItem('${id}')">Ўчириш</button></td>
+                    </tr>`;
+                });
             });
         }
     }
 
     function saveData() {
-        const name = document.getElementById('in-name').value;
-        const desc = document.getElementById('in-desc').value.toLowerCase().trim();
-        const amount = Number(document.getElementById('in-amount').value);
-        if(!name || !amount) return alert("Маълумотларни тўлдиринг!");
-        
         if (currentTab === 'debts') {
-            const folder = desc.includes('dukon') ? 'dukon' : 'mijoz';
-            db.ref('debts/' + folder).push({ name, amount, date: new Date().toLocaleDateString() });
+            const name = document.getElementById('in-name').value;
+            const phone = document.getElementById('in-phone').value;
+            const items = document.getElementById('in-items').value;
+            const date = document.getElementById('in-date').value;
+            const amount = Number(document.getElementById('in-amount').value);
+            const type = document.getElementById('in-type').value;
+
+            if(!name || !amount) return alert("Исм ва қарз суммасини тўлдиринг!");
+
+            db.ref('debts/' + type).push({ name, phone, items, date, amount });
         } else {
-            db.ref(currentTab).push({ name, desc, amount, date: new Date().toLocaleDateString() });
+            const name = document.getElementById('in-name').value;
+            const desc = document.getElementById('in-desc').value;
+            const amount = Number(document.getElementById('in-amount').value);
+
+            if(!name || !amount) return alert("Маълумотларни тўлдиринг!");
+            db.ref('expenses').push({ name, desc, amount, date: new Date().toLocaleDateString() });
         }
-        document.getElementById('in-name').value = "";
-        document.getElementById('in-desc').value = "";
-        document.getElementById('in-amount').value = "";
+        updateInputPanel();
     }
 
     function deleteItem(id, folder = "") { 
@@ -139,12 +188,19 @@
         }
     }
 
+    // Мобил оператор каби огоҳлантириш юбориш функцияси
+    function sendOperatorStyleSMS(phone, name, items, amount) {
+        if (!phone) {
+            alert("Қарздорнинг телефон рақами киритилмаган!");
+            return;
+        }
+
+        const message = `DIQQAT! Qulay Bozor do‘konidan xabar: Hurmatli ${name}, Sizning ${items ? '(' + items + ')' : ''} xaridingizdan ${Number(amount).toLocaleString()} so‘m qarzdorligingiz mavjud. Iltimos, qarzingizni qoplang!`;
+        
+        window.location.href = `sms:${phone}?body=${encodeURIComponent(message)}`;
+    }
+
     function updateStats() {
-        db.ref('sales').on('value', s => {
-            let total = 0;
-            if(s.val()) Object.values(s.val()).forEach(v => total += Number(v.price || v.amount || 0));
-            document.getElementById('stat-sales').innerText = total.toLocaleString() + " сум";
-        });
         db.ref('debts/mijoz').on('value', s => {
             let total = 0;
             if(s.val()) Object.values(s.val()).forEach(v => total += Number(v.amount || 0));
@@ -157,6 +213,8 @@
         });
     }
 
+    // Ишга тушириш
+    updateInputPanel();
     render();
     updateStats();
 </script>
