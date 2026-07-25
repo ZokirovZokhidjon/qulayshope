@@ -59,9 +59,22 @@
 </div>
 
 <script>
-    const firebaseConfig = { apiKey: "AIzaSyAt5qPDDjM8o1sFw9zJ2PCA8Md1Su2zybs", databaseURL: "https://qulaybozor-16d03-default-rtdb.firebaseio.com", projectId: "qulaybozor-16d03" };
-    if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
+    const firebaseConfig = {
+        apiKey: "AIzaSyCWvhr3ifXiadeSlAmjeHHz_JJY87B1DY0",
+        authDomain: "qulaymarket777bot.firebaseapp.com",
+        databaseURL: "https://qulaymarket777bot-default-rtdb.europe-west1.firebasedatabase.app",
+        projectId: "qulaymarket777bot",
+        storageBucket: "qulaymarket777bot.firebasestorage.app",
+        messagingSenderId: "345858908913",
+        appId: "1:345858908913:web:143399f5068359ad123f50",
+        measurementId: "G-HKY0VZDF04"
+    };
+
+    // Firebase ни инициализация қилиш
+    firebase.initializeApp(firebaseConfig);
     const db = firebase.database();
+
+    // Ҳозирги вкладкани белгилаш
     let currentTab = 'debts';
 
     function switchTab(tab) {
