@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Qulay Bozor - Mahsulotlar Buyurtmasi</title>
+    <style>
+        :root { --green: #2ecc71; --blue: #3498db; --dark: #1e2126; --orange: #f39c12; }
+        body { font-family: 'Segoe UI', sans-serif; margin: 0; background: #f4f7f6; color: #333; }
+        header { background: var(--dark); color: white; padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; }
+        .nav-links a { color: white; text-decoration: none; margin-left: 15px; font-weight: bold; }
+        .nav-links a.active { color: var(--orange); }
+        
+        .container { max-width: 1000px; margin: 20px auto; padding: 0 15px; }
+        h2 { text-align: center; color: var(--dark); }
+        
+        .delivery-info { background: #e8f8f5; border-left: 5px solid var(--green); padding: 15px; border-radius: 8px; margin-bottom: 20px; font-size: 15px; }
+        
+        .products-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px; }
+        .product-card { background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 6px rgba(0,0,0,0.05); display: flex; flex-direction: column; justify-content: space-between; padding: 15px; text-align: center; }
+        .product-card img { width: 100%; height: 140px; object-fit: cover; border-radius: 8px; }
+        .product-card h3 { margin: 10px 0 5px; font-size: 18px; }
+        .product-card .price { color: var(--green); font-weight: bold; font-size: 16px; margin-bottom: 10px; }
+        
+        .product-card input[type="checkbox"] { transform: scale(1.3); margin-right: 5px; }
+        .product-card label { font-weight: 500; cursor: pointer; display: flex; align-items: center; justify-content: center; margin-bottom: 10px; }
+
+        .order-section { background: white; padding: 20px; border-radius: 12px; margin-top: 30px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); text-align: center; }
+        .order-section input { padding: 10px; width: 80%; max-width: 400px; margin: 10px 0; border: 1px solid #ccc; border-radius: 6px; display: block; margin-left: auto; margin-right: auto; }
+        
+        .btn-order { background: var(--orange); color: white; border: none; padding: 12px 25px; font-size: 16px; font-weight: bold; border-radius: 8px; cursor: pointer; transition: 0.3s; }
+        .btn-order:hover { background: #e67e22; }
+    </style>
+</head>
+<body>
+
+<header>
+    <div>QULAY BOZOR</div>
+    <div class="nav-links">
+        <a href="shop.html" class="active">МАҲСУЛОТЛАР БУЮРТМАСИ</a>
+        <a href="index.html">АСОСИЙ САҲИФА</a>
+        <a href="admin.html">ШАХСИЙ КАБИНЕТ</a>
+    </div>
+</header>
+
+<div class="container">
+    <h2>ЯНГИ МАҲСУЛОТЛАР ВА БУЮРТМА</h2>
+
+    <!-- Етказиб бериш ҳудудлари -->
+    <div class="delivery-info">
+        <b>🚚 Уйга етказиб бериш хизмати қуйидаги ҳудудлар учун амал қилади:</b><br>
+        Кичик туман, 3-кичик туман, Олмазор МФЙ.
+    </div>
+
+    <!-- Маҳсулотлар каталоги -->
+    <div class="products-grid">
+        <!-- 1-маҳсулот: Сут -->
+        <div class="product-card">
+            <img src="https://images.unsplash.com/photo-1550583724-b2692b85b150?w=300" alt="Сут">
+            <h3>Табиiy Сут (1 литр)</h3>
+            <div class="price">10 000 сўм</div>
+            <label><input type="checkbox" class="product-select" data-name="Сут (1л)" data-price="10000"> Сотиб олиш</label>
+        </div>
+
+        <!-- 2-маҳсулот: Гўшт -->
+        <div class="product-card">
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT14rLSxVXSydzzPk4ubEvKFL2Gc4ey25w9FPKccJ-jig&s=10" alt="Гўшт">
+            <h3>Мол гўшти (1 кг)</h3>
+            <div class="price">85 000 сўм</div>
+            <label><input type="checkbox" class="product-select" data-name="Мол гўшти (1кг)" data-price="85000"> Сотиб олиш</label>
+        </div>
+
+        <!-- 3-маҳсулот: Тухум -->
+        <div class="product-card">
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQfOwitxorOCa6Yf4zUWfOLoFc6uJ8L6m3FbMBB8g9ZWw&s=10" alt="Тухум">
+            <h3>Тухум (1 дона)</h3>
+            <div class="price">2 000 сўм</div>
+            <label><input type="checkbox" class="product-select" data-name="Тухум (1 дона)" data-price="2000"> Сотиб олиш</label>
+        </div>
+
+        <!-- 4-маҳсулот: Қанд -->
+        <div class="product-card">
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRdFUi1ZXUwjlx1lHbT_iKAYjIpOU9IE2nOjl7-roCVKQ&s=10" alt="Қанд">
+            <h3>Шакар / Қанд (1 кг)</h3>
+            <div class="price">14 000 сўм</div>
+            <label><input type="checkbox" class="product-select" data-name="Шакар (1кг)" data-price="14000"> Сотиб олиш</label>
+        </div>
+    </div>
+
+    <!-- Буюртма юбориш панели -->
+    <div class="order-section">
+        <h3>Буюртмани расмийлаштириш</h3>
+        <input type="text" id="cust-name" placeholder="Исм шарифингиз (масалан: Ахадхон)">
+        <input type="text" id="cust-phone" placeholder="Телефон рақамингиз (+998...)">
+        <input type="text" id="cust-address" placeholder="Манзилингиз (масалан: 3-кичик туман, 15-уй)">
+        <br>
+        <button class="btn-order" onclick="sendOrder()">Уйга етказиб беришга буюртма бериш</button>
+    </div>
+</div>
+
+<script>
+    function sendOrder() {
+        const name = document.getElementById('cust-name').value;
+        const phone = document.getElementById('cust-phone').value;
+        const address = document.getElementById('cust-address').value;
+
+        if (!name || !phone || !address) {
+            alert("Илтимос, исм, телефон ва манзилни тўлиқ киритинг!");
+            return;
+        }
+
+        const checkboxes = document.querySelectorAll('.product-select:checked');
+        if (checkboxes.length === 0) {
+            alert("Камида битта маҳсулотни белгиланг!");
+            return;
+        }
+
+        let selectedItems = [];
+        let totalPrice = 0;
+
+        checkboxes.forEach(cb => {
+            selectedItems.push(cb.getAttribute('data-name'));
+            totalPrice += Number(cb.getAttribute('data-price'));
+        });
+
+        alert(`Раҳмат, ${name}! Буюртмангиз қабул қилинди.\n\n🛒 Маҳсулотлар: ${selectedItems.join(', ')}\n💰 Умумий нарх: ${totalPrice.toLocaleString()} сўм\n📍 Манзил: ${address}\n\nТез орада сиз билан боғланамиз!`);
+    }
+</script>
+
+</body>
+</html>
